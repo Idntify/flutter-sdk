@@ -1,0 +1,4 @@
+enum Stage {
+  prod,
+  dev
+}
