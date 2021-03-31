@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:idntify_widget/models/instruction_image.dart';
-import 'package:idntify_widget/widgets/text.dart';
+
+import 'package:idntify_widget/src/models/instruction_image.dart';
+import 'package:idntify_widget/src/widgets/text.dart';
 
 class InstructionWidget extends StatelessWidget {
   final InstructionImage image;

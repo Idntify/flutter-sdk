@@ -2,9 +2,9 @@ import 'dart:developer' as developer;
 import 'dart:typed_data';
 import 'dart:convert';
 
-import 'package:idntify_widget/models/document_type.dart';
-import 'package:idntify_widget/models/response.dart';
-import 'package:idntify_widget/models/stage.dart';
+import 'package:idntify_widget/src/models/document_type.dart';
+import 'package:idntify_widget/src/models/response.dart';
+import 'package:idntify_widget/src/models/stage.dart';
 
 import 'package:http/http.dart';
 

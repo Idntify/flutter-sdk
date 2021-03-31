@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:idntify_widget/models/image_picker_icon.dart';
-import 'package:idntify_widget/models/text_icon.dart';
-import 'package:idntify_widget/widgets/text.dart';
+
+import 'package:idntify_widget/src/models/image_picker_icon.dart';
+import 'package:idntify_widget/src/models/text_icon.dart';
+import 'package:idntify_widget/src/widgets/text.dart';
 
 class ImagePicker extends StatelessWidget {
   final TextIcon textIcon;

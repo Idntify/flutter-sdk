@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:idntify_widget/models/info_icon.dart';
-import 'package:idntify_widget/widgets/button.dart';
-import 'package:idntify_widget/widgets/image_picker.dart';
-import 'package:idntify_widget/widgets/text.dart';
+import 'package:idntify_widget/src/models/info_icon.dart';
+import 'package:idntify_widget/src/widgets/button.dart';
+import 'package:idntify_widget/src/widgets/image_picker.dart';
+import 'package:idntify_widget/src/widgets/text.dart';
 
 class Info extends StatelessWidget {
   final InfoIcon icon;

@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
-import 'package:idntify_widget/widgets/button.dart';
-import 'package:idntify_widget/widgets/text.dart';
+import 'package:idntify_widget/src/widgets/button.dart';
+import 'package:idntify_widget/src/widgets/text.dart';
 
 import 'package:extended_image/extended_image.dart';
 

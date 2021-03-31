@@ -1,7 +1,4 @@
 library idntify_widget;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'src/services/api_service.dart';
+export 'src/idntify_widget.dart';

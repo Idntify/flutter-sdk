@@ -1,4 +1,4 @@
-import 'package:idntify_widget/models/text_icon.dart';
+import 'package:idntify_widget/src/models/text_icon.dart';
 
 import 'package:flutter/material.dart';
 
