@@ -14,7 +14,7 @@ class IdntifyApiService {
   final String apiKey;
   final Stage stage; 
   final String origin;
-  
+
   IdntifyApiService(this.apiKey, {this.stage, this.origin}) {
     this._base = this.stage == Stage.dev ? 'api.stage.idntify.io' : 'api.idntify.io';  
   }
@@ -23,18 +23,18 @@ class IdntifyApiService {
     const String endpoint = 'v1/widget/transaction';
     final Map<String, String> headers = {'x-api-key': apiKey};
     Map<String, String> payload = {'origin': origin};
-  
+
     try {
       Response res = await post(Uri.https(_base, endpoint), headers: headers, body: jsonEncode(payload));
       Map<String, dynamic> body = jsonDecode(res.body);
-  
+
       IdntifyResponse parsedBody = IdntifyResponse.fromJson(body);
-  
+
       if (res.statusCode != 200) {
         developer.log('Server error', error: parsedBody);
         return Future.error(parsedBody);
       }
-  
+
       _transactionKey = parsedBody.data['transactionToken'];
     } catch (error) {
       developer.log('Client error', error: error);
