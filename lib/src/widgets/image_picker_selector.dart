@@ -4,13 +4,13 @@ import 'package:idntify_widget/src/models/image_picker_icon.dart';
 import 'package:idntify_widget/src/models/text_icon.dart';
 import 'package:idntify_widget/src/widgets/text.dart';
 
-class ImagePicker extends StatelessWidget {
+class ImagePickerSelector extends StatelessWidget {
   final TextIcon textIcon;
   final ImagePickerIcon icon;
   final String text;
   final onTap;
 
-  ImagePicker(this.text, this.icon, {this.onTap, this.textIcon});
+  ImagePickerSelector(this.text, this.icon, {this.onTap, this.textIcon});
 
   Widget build(BuildContext context) {
     return GestureDetector(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:idntify_widget/src/models/info_icon.dart';
 import 'package:idntify_widget/src/widgets/button.dart';
-import 'package:idntify_widget/src/widgets/image_picker.dart';
+import 'package:idntify_widget/src/widgets/image_picker_selector.dart';
 import 'package:idntify_widget/src/widgets/text.dart';
 
 class Info extends StatelessWidget {
@@ -10,7 +10,7 @@ class Info extends StatelessWidget {
   final String title;
   final List<InfoText> texts;
   final List<Button> buttons;
-  final ImagePicker imagePicker;
+  final ImagePickerSelector imagePicker;
 
   Info({this.icon, this.title, this.texts, this.buttons, this.imagePicker});
 

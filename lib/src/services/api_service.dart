@@ -15,7 +15,7 @@ class IdntifyApiService {
   final Stage stage; 
   final String origin;
 
-  IdntifyApiService(this.apiKey, {this.stage, this.origin}) {
+  IdntifyApiService(this.apiKey, this.origin, { this.stage = Stage.dev }) {
     this._base = this.stage == Stage.dev ? 'api.stage.idntify.io' : 'api.idntify.io';  
   }
 

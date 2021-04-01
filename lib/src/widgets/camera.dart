@@ -8,7 +8,7 @@ import 'package:idntify_widget/src/widgets/text.dart';
 
 import 'package:camera/camera.dart';
 
-class CameraWidget extends StatefulWidget {
+class Camera extends StatefulWidget {
   final CameraController cameraController;
   final GestureTapCallback takePhoto;
   final GestureTapCallback changeCamera;
@@ -17,13 +17,13 @@ class CameraWidget extends StatefulWidget {
   final TextIcon textIcon;
   final bool recording;
 
-  CameraWidget({Key key, @required this.cameraController, this.takePhoto, this.changeCamera, this.changeCameraOption, this.text, this.textIcon, this.recording = false}) : super(key: key);
+  Camera(this.cameraController, {Key key, this.takePhoto, this.changeCamera, this.changeCameraOption, this.text, this.textIcon, this.recording = false}) : super(key: key);
 
   @override
-  _CameraWidgetState createState() => _CameraWidgetState();
+  _CameraState createState() => _CameraState();
 }
 
-class _CameraWidgetState extends State<CameraWidget> {
+class _CameraState extends State<Camera> {
   double opacity = 1.0;
 
   Widget build(BuildContext context) {
