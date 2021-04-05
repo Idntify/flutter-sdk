@@ -118,6 +118,22 @@ class _IdnitfyState extends State<Idntify> {
     }
   }
 
+  Future<void> _handleSelfie() async {
+    try {
+      await getSelfie(_cameraController, _apiService);
+
+      setState(() {
+        currentStep = 9;
+        _showLogo = true;
+      });
+
+      widget.onStepChange?.call(currentStep);
+    } catch (error) {
+      print(error);
+      _handleSelfie();
+    }
+  }
+
   Widget build(BuildContext context) {
     switch (currentStep) {
       case 1:
@@ -314,30 +330,41 @@ class _IdnitfyState extends State<Idntify> {
         _widgeToRender = Cropper(
           _editorKey,
           !_frontalIDLoaded ? _frontalID : _reverseID,
+          loading: _loadingImage,
           onRetry: () => setState(() =>
               {currentStep = _frontalIDLoaded && !_reverseIDLoaded ? 3 : 5}),
-          onContinue: () async {
-            final result = await CropImage().getImage(_editorKey);
+          onContinue: _loadingImage ? () {} : () async {
+            try {
+              setState(() => _loadingImage = true);
 
-            await _apiService.addDocument(
-                result,
-                _frontalID != null && _reverseID == null
-                    ? DocumentType.frontal
-                    : DocumentType.back);
+              final result = await CropImage().getImage(_editorKey);
 
-            setState(() {
-              if (!_frontalIDLoaded) {
-                _frontalID = result;
-                _frontalIDLoaded = true;
-                currentStep = 5;
-              } else {
-                _reverseID = result;
-                _reverseIDLoaded = true;
-                currentStep = 7;
-              }
-              widget.onStepChange?.call(currentStep);
-              _takePicture = false;
-            });
+              await _apiService.addDocument(
+                  result,
+                  _frontalID != null && _reverseID == null
+                      ? DocumentType.frontal
+                      : DocumentType.back);
+
+              setState(() {
+                if (!_frontalIDLoaded) {
+                  _frontalID = result;
+                  _frontalIDLoaded = true;
+                  currentStep = 5;
+                } else {
+                  _reverseID = result;
+                  _reverseIDLoaded = true;
+                  currentStep = 7;
+                }
+                widget.onStepChange?.call(currentStep);
+                _loadingImage = false;
+                _takePicture = false;
+              });
+            } catch (error) {
+              setState(() =>
+                {currentStep = _frontalIDLoaded && !_reverseIDLoaded ? 3 : 5,
+                  _loadingImage = false, _takePicture = false});
+              print(error);
+            }
           },
         );
         break;
@@ -359,7 +386,6 @@ class _IdnitfyState extends State<Idntify> {
                 icon: TextIcon.second,
                 padding: 10),
           ],
-          imagePicker: null,
           buttons: [
             Button('Continuar', onPressed: () {
               setState(() => currentStep = 8);
@@ -379,16 +405,7 @@ class _IdnitfyState extends State<Idntify> {
           _widgeToRender = Camera(
             _cameraController,
             changeCameraOption: false,
-            takePhoto: () async {
-              await getSelfie(_cameraController, _apiService);
-
-              setState(() {
-                currentStep = 9;
-                _showLogo = true;
-              });
-
-              widget.onStepChange?.call(currentStep);
-            },
+            takePhoto: _handleSelfie,
             recording: true,
           );
         }
