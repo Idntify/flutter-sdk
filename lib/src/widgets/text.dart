@@ -20,7 +20,7 @@ class InfoText extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.only(right: 12),
-                child: Image.asset(icon.name, height: 35, width: 35,),
+                child: Image.asset(icon.name, height: 35, width: 35, package: 'idntify_widget'),
               ),
               Flexible(
                   child: Text(text,

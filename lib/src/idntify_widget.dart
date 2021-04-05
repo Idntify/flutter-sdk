@@ -71,10 +71,19 @@ class _IdnitfyState extends State<Idntify> {
 
   Widget _widgeToRender;
 
-  _IdnitfyState() {
-    _apiService = IdntifyApiService(widget.apiKey, widget.origin, stage: widget.stage);
+  /*_IdnitfyState() {
+    print('HEREEEEEEEEEEEEEEEE');
+    _apiService = IdntifyApiService(widget.apiKey, widget.origin);
+  }*/
+
+  @override
+  void initState() {
+    super.initState();
+    
+    _apiService = IdntifyApiService(widget.apiKey, widget.origin);
   }
 
+  // This code needs to be rewritten or refactored
     void getCameras({bool flip = false, CameraLensDirection cameraToSet = CameraLensDirection.back}) {
     // Catch if there is no cameras and set the configuration for front/back camera.
     if (widget.cameras.length > 0) {
@@ -124,7 +133,7 @@ class _IdnitfyState extends State<Idntify> {
                         InfoText(error.error , color: Colors.red, bold: true),
                           InfoText(error.message, color: Colors.red),
                       } else ...{
-                        InfoText(error.toString(), color: Colors.red, bold: true)
+                        InfoText(error.toString() ?? '', color: Colors.red, bold: true)
                       }
                     ],
                 );
@@ -341,7 +350,7 @@ class _IdnitfyState extends State<Idntify> {
         }
         break;
       case 9:
-        widget.onTransactionFinished?.call();
+        Timer(Duration(seconds: 7), () => widget.onTransactionFinished?.call());
 
         _widgeToRender = Info(
             icon: InfoIcon.complete,
@@ -363,7 +372,7 @@ class _IdnitfyState extends State<Idntify> {
             color: [3, 5, 8].contains(currentStep) && _takePicture ? Colors.black : Colors.white),
         child: Column(
             children: <Widget>[
-              if (_showLogo) ...{ Image.asset('icons/logo.png', scale: 1.6) },
+              if (_showLogo) ...{ Image.asset('assets/icons/logo.png', scale: 1.6, package: 'idntify_widget') },
               _widgeToRender ?? Container()
             ],
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -371,3 +380,4 @@ class _IdnitfyState extends State<Idntify> {
     );
 
   }
+}

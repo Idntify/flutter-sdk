@@ -65,7 +65,7 @@ class _CameraState extends State<Camera> {
                                               children: <Widget>[
                                                 AnimatedOpacity(
                                                     child: FloatingActionButton(
-                                                      child: Image.asset(widget.recording ? CameraButtonIcons.recordActive.name : CameraButtonIcons.record.name),
+                                                      child: Image.asset(widget.recording ? CameraButtonIcons.recordActive.name : CameraButtonIcons.record.name, package: 'idntify_widget'),
                                                       backgroundColor: Colors.white,
                                                       onPressed: () {
                                                         if (widget.recording) {
@@ -85,7 +85,7 @@ class _CameraState extends State<Camera> {
                                                   Padding(
                                                     padding: EdgeInsets.only(left: 5),
                                                     child: FloatingActionButton(
-                                                        child: Image.asset(CameraButtonIcons.flip.name),
+                                                        child: Image.asset(CameraButtonIcons.flip.name, package: 'idntify_widget'),
                                                         backgroundColor: Colors.white,
                                                         mini: true,
                                                         onPressed: widget.changeCamera

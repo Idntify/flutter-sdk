@@ -8,11 +8,11 @@ extension CameraButtonIconsImplementation on CameraButtonIcons {
   String get name {
     switch (this) {
       case CameraButtonIcons.record:
-        return 'icons/record.png';
+        return 'assets/icons/record.png';
       case CameraButtonIcons.recordActive:
-        return 'icons/record-active.png';
+        return 'assets/icons/record-active.png';
       case CameraButtonIcons.flip:
-        return 'icons/flip.png';
+        return 'assets/icons/flip.png';
       default:
         return null;
     }

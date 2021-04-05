@@ -18,7 +18,7 @@ class Info extends StatelessWidget {
     return Expanded(
         child: Column(
             children:<Widget>[
-              if (icon != null) ...{ Image.asset(icon.name, scale: 1.6) },
+              if (icon != null) ...{ Image.asset(icon.name, scale: 1.6, package: 'idntify_widget') },
               if (title != null) ...{ InfoText(title, bold: true, size: 24, color: Colors.black) },
               Flexible(child: Column(children: texts ?? [], mainAxisSize: MainAxisSize.min,), fit: FlexFit.loose, flex: 2),
               if (imagePicker != null) ...{ imagePicker },

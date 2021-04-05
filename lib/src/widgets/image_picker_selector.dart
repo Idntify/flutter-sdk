@@ -18,7 +18,7 @@ class ImagePickerSelector extends StatelessWidget {
             child: Column(
                 children: <Widget>[
                   InfoText(text, color: Colors.black, icon: textIcon),
-                  Image.asset(icon.name, height: 30)
+                  Image.asset(icon.name, height: 30, package: 'idntify_widget')
                 ]
             ), width: 250, padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
