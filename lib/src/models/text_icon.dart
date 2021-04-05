@@ -1,9 +1,4 @@
-enum TextIcon {
-  first,
-  second,
-  front,
-  reverse
-}
+enum TextIcon { first, second, front, reverse }
 
 extension TextIconExtension on TextIcon {
   String get name {

@@ -1,7 +1,4 @@
-enum DocumentType {
-  back,
-  frontal
-}
+enum DocumentType { back, frontal }
 
 extension DocumentTypeExtension on DocumentType {
   String get name {

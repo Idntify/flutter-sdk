@@ -1,4 +1,1 @@
-enum Stage {
-  prod,
-  dev
-}
+enum Stage { prod, dev }

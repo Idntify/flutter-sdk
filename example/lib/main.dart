@@ -49,25 +49,35 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: !_executeIdntifyProcess ? Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              _IdntifyProcessCompleted ? 'Transacción de IDntify completada' : 'Mi carrito de compras... (WIP)',
+      body: !_executeIdntifyProcess
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    _IdntifyProcessCompleted
+                        ? 'Transacción de IDntify completada'
+                        : 'Mi carrito de compras... (WIP)',
+                  ),
+                ],
+              ),
+            )
+          : Idntify(
+              '<<YOUR API_KEY>>',
+              '<<YOUR ORIGIN>>',
+              cameras,
+              onTransactionFinished: () => setState(() => {
+                    _executeIdntifyProcess = false,
+                    _IdntifyProcessCompleted = true
+                  }),
             ),
-          ],
-        ),
-      ) : Idntify(
-        '<<YOUR API_KEY>>', 
-        '<<YOUR ORIGIN>>',
-        cameras,
-        onTransactionFinished: () => setState(() => {_executeIdntifyProcess = false, _IdntifyProcessCompleted = true}),),
-      floatingActionButton: !_executeIdntifyProcess ? FloatingActionButton(
-        onPressed: () => setState(() => _executeIdntifyProcess = true),
-        tooltip: 'Checkout',
-        child: Icon(Icons.payment),
-      ) : null,
+      floatingActionButton: !_executeIdntifyProcess
+          ? FloatingActionButton(
+              onPressed: () => setState(() => _executeIdntifyProcess = true),
+              tooltip: 'Checkout',
+              child: Icon(Icons.payment),
+            )
+          : null,
     );
   }
 }

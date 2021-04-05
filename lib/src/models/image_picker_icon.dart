@@ -1,8 +1,4 @@
-enum ImagePickerIcon {
-  load,
-  loading,
-  loaded
-}
+enum ImagePickerIcon { load, loading, loaded }
 
 extension ImagePickerIconExtension on ImagePickerIcon {
   String get name {
@@ -17,5 +13,4 @@ extension ImagePickerIconExtension on ImagePickerIcon {
         return null;
     }
   }
-
 }

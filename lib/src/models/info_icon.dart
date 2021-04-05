@@ -1,9 +1,4 @@
-enum InfoIcon {
-  identity,
-  photo,
-  selfie,
-  complete
-}
+enum InfoIcon { identity, photo, selfie, complete }
 
 extension InfoIconExension on InfoIcon {
   String get name {

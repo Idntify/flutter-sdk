@@ -12,14 +12,14 @@ class Instructions extends StatelessWidget {
   Widget build(context) {
     return Expanded(
         child: Column(
-            children: <Widget>[
-              Image.asset(image.name, scale: 2, package: 'idntify_widget'),
-              Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: InfoText(text, bold: true, size: 24, color: Colors.black),
-              )
-            ], mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Image.asset(image.name, scale: 2, package: 'idntify_widget'),
+        Padding(
+          padding: EdgeInsets.only(top: 15),
+          child: InfoText(text, bold: true, size: 24, color: Colors.black),
         )
-    );
+      ],
+      mainAxisAlignment: MainAxisAlignment.center,
+    ));
   }
 }

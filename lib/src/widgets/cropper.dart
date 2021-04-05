@@ -16,24 +16,26 @@ class Cropper extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Expanded(
-        child: Column(
-            children: <Widget>[
-              Flexible(
-                  child: ExtendedImage.memory(image,
-                  fit: BoxFit.contain,
-                  mode: ExtendedImageMode.editor,
-                  extendedImageEditorKey: editorKey
-                ),
-              ),
-              InfoText('Asegurate de que los detalles se observen claramente', padding: 30),
-              Row(
-                  children: <Button>[
-                    Button('Reintentar', alternative: true, onPressed: onRetry),
-                    Button('Continuar', onPressed: onContinue,)
-                  ], crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              )
-            ], mainAxisAlignment: MainAxisAlignment.spaceAround
-        )
-    );
+        child: Column(children: <Widget>[
+      Flexible(
+        child: ExtendedImage.memory(image,
+            fit: BoxFit.contain,
+            mode: ExtendedImageMode.editor,
+            extendedImageEditorKey: editorKey),
+      ),
+      InfoText('Asegurate de que los detalles se observen claramente',
+          padding: 30),
+      Row(
+        children: <Button>[
+          Button('Reintentar', alternative: true, onPressed: onRetry),
+          Button(
+            'Continuar',
+            onPressed: onContinue,
+          )
+        ],
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      )
+    ], mainAxisAlignment: MainAxisAlignment.spaceAround));
   }
 }

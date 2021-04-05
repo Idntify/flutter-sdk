@@ -1,8 +1,4 @@
-enum CameraButtonIcons {
-  record,
-  recordActive,
-  flip
-}
+enum CameraButtonIcons { record, recordActive, flip }
 
 extension CameraButtonIconsImplementation on CameraButtonIcons {
   String get name {
@@ -17,4 +13,4 @@ extension CameraButtonIconsImplementation on CameraButtonIcons {
         return null;
     }
   }
-}   
+}

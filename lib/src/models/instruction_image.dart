@@ -1,8 +1,4 @@
-enum InstructionImage {
-  front,
-  reverse,
-  selfie
-}
+enum InstructionImage { front, reverse, selfie }
 
 extension InstructionImageExtension on InstructionImage {
   String get name {
