@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:example/cart_element.dart';
 import 'package:flutter/material.dart';
 import 'package:idntify_widget/idntify_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -22,11 +23,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Tienda Ejemplo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Mi Tienda :)'),
+      home: MyHomePage(title: 'Tienda Ejemplo'),
     );
   }
 }
@@ -42,6 +43,30 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool _executeIdntifyProcess = false;
   bool _idntifyProcessCompleted = false;
+
+  final cartElements = [
+    {
+      'title': 'Colorblock Scuba',
+      'imageSrc': 'https://stage-store-test.idntify.io/images/cart/one.png',
+      'subtitle': 'Web ID: 1089772',
+      'price': 59.0,
+      'quantity': 1
+    },
+    {
+      'title': 'Colorblock Scuba',
+      'imageSrc': 'https://stage-store-test.idntify.io/images/cart/two.png',
+      'subtitle': 'Web ID: 1089772',
+      'price': 59.0,
+      'quantity': 1
+    },
+    {
+      'title': 'Colorblock Scuba',
+      'imageSrc': 'https://stage-store-test.idntify.io/images/cart/three.png',
+      'subtitle': 'Web ID: 1089772',
+      'price': 59.0,
+      'quantity': 1
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -72,27 +97,59 @@ class _MyHomePageState extends State<MyHomePage> {
                                     : Colors.red)))
                   ],
                 ),
+                Container(
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Text(
+                            'Item',
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                          flex: 1),
+                      Expanded(
+                        child: Text('Price',
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.white)),
+                      ),
+                      Expanded(
+                        child: Text('Quantity',
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.white)),
+                      ),
+                      Expanded(
+                        child: Text('Total',
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.white)),
+                      ),
+                    ],
+                  ),
+                  color: Colors.orange,
+                  padding: EdgeInsets.all(5),
+                ),
                 Expanded(
-                    child: ListView(
-                  children: <Widget>[
-                    ListTile(
-                      leading: Icon(Icons.map),
-                      title: Text('Map'),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.photo_album),
-                      title: Text('Album'),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.phone),
-                      title: Text('Phone'),
-                    )
-                  ],
-                )),
-                ElevatedButton(
-                    onPressed: () =>
-                        setState(() => _executeIdntifyProcess = true),
-                    child: Text('Checkout', style: TextStyle(fontSize: 20)))
+                  child: ListView.builder(
+                      itemCount: cartElements.length,
+                      itemBuilder: (context, index) {
+                        final element = cartElements[index];
+                        return CartElement(
+                            element['title'], element['imageSrc'],
+                            price: element['price'],
+                            quantity: element['quantity'],
+                            subtitle: element['subtitle'],
+                            onQuantityChange: (v) => setState(
+                                () => cartElements[index]['quantity'] = v),
+                            onDelete: () =>
+                                setState(() => cartElements.removeAt(index)));
+                      }),
+                ),
+                Padding(
+                    padding: EdgeInsets.all(10),
+                    child: ElevatedButton(
+                        onPressed: () =>
+                            setState(() => _executeIdntifyProcess = true),
+                        child: Text('Checkout', style: TextStyle(fontSize: 20)),
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.all(15))))
               } else ...{
                 Expanded(
                     child: Idntify(
