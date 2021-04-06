@@ -80,6 +80,12 @@ class _IdnitfyState extends State<Idntify> {
     _apiService = IdntifyApiService(widget.apiKey, widget.origin);
   }
 
+  @override
+  void dispose() {
+    _cameraController?.dispose();
+    super.dispose();
+  }
+
   // This code needs to be rewritten or refactored
   void getCameras(
       {bool flip = false,

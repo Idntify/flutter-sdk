@@ -41,43 +41,70 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool _executeIdntifyProcess = false;
-  bool _IdntifyProcessCompleted = false;
+  bool _idntifyProcessCompleted = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: !_executeIdntifyProcess
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    _IdntifyProcessCompleted
-                        ? 'Transacción de IDntify completada'
-                        : 'Mi carrito de compras... (WIP)',
-                  ),
-                ],
-              ),
-            )
-          : Idntify(
-              '<<YOUR API_KEY>>',
-              '<<YOUR ORIGIN>>',
-              cameras,
-              onTransactionFinished: () => setState(() => {
-                    _executeIdntifyProcess = false,
-                    _IdntifyProcessCompleted = true
-                  }),
-            ),
-      floatingActionButton: !_executeIdntifyProcess
-          ? FloatingActionButton(
-              onPressed: () => setState(() => _executeIdntifyProcess = true),
-              tooltip: 'Checkout',
-              child: Icon(Icons.payment),
-            )
-          : null,
-    );
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: Container(
+            width: double.infinity,
+            child: Column(children: <Widget>[
+              if (!_executeIdntifyProcess) ...{
+                Row(
+                  children: <Widget>[
+                    Text(
+                      'IDntify status:',
+                      style: TextStyle(fontSize: 24),
+                    ),
+                    Expanded(
+                        child: Text(
+                            _idntifyProcessCompleted
+                                ? 'Completed'
+                                : 'Not initialized',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 24,
+                                color: _idntifyProcessCompleted
+                                    ? Colors.green
+                                    : Colors.red)))
+                  ],
+                ),
+                Expanded(
+                    child: ListView(
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(Icons.map),
+                      title: Text('Map'),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.photo_album),
+                      title: Text('Album'),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.phone),
+                      title: Text('Phone'),
+                    )
+                  ],
+                )),
+                ElevatedButton(
+                    onPressed: () =>
+                        setState(() => _executeIdntifyProcess = true),
+                    child: Text('Checkout', style: TextStyle(fontSize: 20)))
+              } else ...{
+                Expanded(
+                    child: Idntify(
+                  '<<YOUR API_KEY>>',
+                  '<<YOUR ORIGIN>>',
+                  cameras,
+                  onTransactionFinished: () => setState(() => {
+                        _executeIdntifyProcess = false,
+                        _idntifyProcessCompleted = true
+                      }),
+                ))
+              }
+            ])));
   }
 }
