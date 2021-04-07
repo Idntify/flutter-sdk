@@ -156,6 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   '<<YOUR API_KEY>>',
                   '<<YOUR ORIGIN>>',
                   cameras,
+                  stage: Stage.dev,
                   onTransactionFinished: () => setState(() => {
                         _executeIdntifyProcess = false,
                         _idntifyProcessCompleted = true

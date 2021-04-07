@@ -77,7 +77,7 @@ class _IdnitfyState extends State<Idntify> {
   void initState() {
     super.initState();
 
-    _apiService = IdntifyApiService(widget.apiKey, widget.origin);
+    _apiService = IdntifyApiService(widget.apiKey, widget.origin, stage: widget.stage);
   }
 
   @override
