@@ -1,4 +1,3 @@
-import 'dart:developer' as developer;
 import 'dart:typed_data';
 import 'dart:convert';
 
@@ -33,13 +32,13 @@ class IdntifyApiService {
       IdntifyResponse parsedBody = IdntifyResponse.fromJson(body);
 
       if (res.statusCode != 200) {
-        developer.log('Server error', error: parsedBody);
+        print('Server error: ${body}');
         return Future.error(parsedBody);
       }
 
       _transactionKey = parsedBody.data['transactionToken'];
     } catch (error) {
-      developer.log('Client error', error: error);
+      print('Client error: ${error}');
       return Future.error(error);
     }
   }
@@ -49,6 +48,7 @@ class IdntifyApiService {
     final Map<String, String> headers = {'x-transaction-key': _transactionKey};
 
     try {
+      print(type);
       final String dataB64 = base64Encode(data.toList());
       final Map<String, String> payload = {
         'd': 'data:image/png;base64,${dataB64}',
@@ -61,11 +61,11 @@ class IdntifyApiService {
       IdntifyResponse parsedBody = IdntifyResponse.fromJson(body);
 
       if (res.statusCode != 200) {
-        developer.log('Server error', error: parsedBody);
+        print('Server error: ${body}');
         return Future.error(parsedBody);
       }
     } catch (error) {
-      developer.log('Client error', error: error);
+      print('Client error: ${error}');
       return Future.error(error);
     }
   }
@@ -92,11 +92,11 @@ class IdntifyApiService {
       IdntifyResponse parsedBody = IdntifyResponse.fromJson(body);
 
       if (res.statusCode != 200) {
-        developer.log('Server error', error: parsedBody);
+        print('Server error: ${body}');
         return Future.error(parsedBody);
       }
     } catch (error) {
-      developer.log('Client error', error: error);
+      print('Client error: ${error}');
       return Future.error(error);
     }
   }

@@ -222,7 +222,7 @@ class _IdnitfyState extends State<Idntify> {
               Button(
                 'Cancelar',
                 alternative: true,
-                onPressed: () => setState(() => _loadFiles = false),
+                onPressed: () => setState(() => {_loadFiles = false, _frontalID = null, _reverseID = null}),
               )
             },
           }
@@ -261,31 +261,41 @@ class _IdnitfyState extends State<Idntify> {
                       : _loadedImage
                           ? ImagePickerIcon.loaded
                           : ImagePickerIcon.load,
-                  textIcon: TextIcon.front, onTap: _loadingImage ? null : () async {
-                  try {
-                    Uint8List image = await pickImage(_imagePicker);
-                    setState(() {
-                      _frontalID != null
-                          ? _reverseID = image
-                          : _frontalID = image;
-                      _loadingImage = true;
-                    });
+                  textIcon: TextIcon.front,
+                  onTap: _loadingImage
+                      ? null
+                      : () async {
+                          try {
+                            Uint8List image = await pickImage(_imagePicker);
 
-                    await setImage(
-                        image,
-                        _apiService,
-                        _frontalID != null && _reverseID == null
-                            ? DocumentType.frontal
-                            : DocumentType.back);
+                              setState(() {
+                                _frontalID != null
+                                    ? _reverseID = image
+                                    : _frontalID = image;
+                                _loadingImage = true;
+                              });
 
-                    await Future.delayed(Duration(seconds: 10));
+                              await setImage(
+                                  image,
+                                  _apiService,
+                                  _frontalID != null && _reverseID == null
+                                      ? DocumentType.frontal
+                                      : DocumentType.back);
 
-                    setState(
-                        () => {_loadingImage = false, _loadedImage = true});
-                  } catch (error) {
-                    print(error);
-                  }
-                })
+                              await Future.delayed(Duration(seconds: 10));
+
+                              setState(() =>
+                                  {_loadingImage = false, _loadedImage = true});
+                          } catch (error) {
+                            print(error);
+                            setState(() {
+                              _loadingImage = false;
+                              _loadedImage = false;
+                              _frontalID != null && _reverseID == null 
+                                  ? _frontalID = null : _reverseID = null;
+                            });
+                          }
+                        })
               : null,
           buttons: buttons,
         );
@@ -311,21 +321,26 @@ class _IdnitfyState extends State<Idntify> {
                 : 'Toma una foto del frente de tu INE',
             textIcon: _frontalIDLoaded ? TextIcon.reverse : TextIcon.front,
             takePhoto: () async {
-              final XFile image = await _cameraController.takePicture();
-              final Uint8List imageBytes = await image.readAsBytes();
-              setState(() {
-                if (!_frontalIDLoaded) {
-                  _frontalID = imageBytes;
-                  currentStep = 4;
-                  _showLogo = true;
-                } else {
-                  _reverseID = imageBytes;
-                  currentStep = 6;
-                  _showLogo = true;
-                }
-
+              try {
+                final XFile image = await _cameraController.takePicture();
+                final Uint8List imageBytes = await image.readAsBytes();
+                setState(() {
+                  if (!_frontalIDLoaded) {
+                    _frontalID = imageBytes;
+                    currentStep = 4;
+                    _showLogo = true;
+                  } else {
+                    _reverseID = imageBytes;
+                    currentStep = 6;
+                    _showLogo = true;
+                  }
+                });
+                  
                 widget.onStepChange?.call(currentStep);
-              });
+              } catch (error) {
+                print(error);
+                setState(() => _takePicture = false);
+              }
             },
             changeCamera: () => getCameras(flip: true),
           );
@@ -339,39 +354,44 @@ class _IdnitfyState extends State<Idntify> {
           loading: _loadingImage,
           onRetry: () => setState(() =>
               {currentStep = _frontalIDLoaded && !_reverseIDLoaded ? 3 : 5}),
-          onContinue: _loadingImage ? () {} : () async {
-            try {
-              setState(() => _loadingImage = true);
+          onContinue: _loadingImage
+              ? () {}
+              : () async {
+                  try {
+                    setState(() => _loadingImage = true);
 
-              final result = await CropImage().getImage(_editorKey);
+                    final result = await CropImage().getImage(_editorKey);
 
-              await _apiService.addDocument(
-                  result,
-                  _frontalID != null && _reverseID == null
-                      ? DocumentType.frontal
-                      : DocumentType.back);
+                    await _apiService.addDocument(
+                        result,
+                        _frontalID != null && _reverseID == null
+                            ? DocumentType.frontal
+                            : DocumentType.back);
 
-              setState(() {
-                if (!_frontalIDLoaded) {
-                  _frontalID = result;
-                  _frontalIDLoaded = true;
-                  currentStep = 5;
-                } else {
-                  _reverseID = result;
-                  _reverseIDLoaded = true;
-                  currentStep = 7;
-                }
-                widget.onStepChange?.call(currentStep);
-                _loadingImage = false;
-                _takePicture = false;
-              });
-            } catch (error) {
-              setState(() =>
-                {currentStep = _frontalIDLoaded && !_reverseIDLoaded ? 3 : 5,
-                  _loadingImage = false, _takePicture = false});
-              print(error);
-            }
-          },
+                    setState(() {
+                      if (!_frontalIDLoaded) {
+                        _frontalID = result;
+                        _frontalIDLoaded = true;
+                        currentStep = 5;
+                      } else {
+                        _reverseID = result;
+                        _reverseIDLoaded = true;
+                        currentStep = 7;
+                      }
+                      widget.onStepChange?.call(currentStep);
+                      _loadingImage = false;
+                      _takePicture = false;
+                    });
+                  } catch (error) {
+                    setState(() => {
+                          currentStep =
+                              _frontalIDLoaded && !_reverseIDLoaded ? 3 : 5,
+                          _loadingImage = false,
+                          _takePicture = false
+                        });
+                    print(error);
+                  }
+                },
         );
         break;
       case 7:

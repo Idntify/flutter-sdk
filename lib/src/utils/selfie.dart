@@ -8,11 +8,11 @@ Future<void> getSelfie(
   await cameraController.prepareForVideoRecording();
   await cameraController.startVideoRecording();
 
-  await Future.delayed(const Duration(seconds: 1));
+  await Future.delayed(Duration(seconds: 1));
 
   XFile video = await cameraController.stopVideoRecording();
 
-  await Future.delayed(const Duration(seconds: 2));
+  await Future.delayed(Duration(seconds: 2));
 
   final XFile image = await cameraController.takePicture();
 
