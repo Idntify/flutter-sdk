@@ -23,7 +23,7 @@ class CartElement extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Image.network(imageSrc, scale: 1.5),
+        Image.asset(imageSrc, scale: 1.5),
         Expanded(
             child: Column(children: <Widget>[
           Text(title, style: TextStyle(fontSize: 16)),

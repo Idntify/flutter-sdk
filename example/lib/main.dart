@@ -47,21 +47,21 @@ class _MyHomePageState extends State<MyHomePage> {
   final cartElements = [
     {
       'title': 'Colorblock Scuba',
-      'imageSrc': 'https://stage-store-test.idntify.io/images/cart/one.png',
+      'imageSrc': 'assets/one.png',
       'subtitle': 'Web ID: 1089772',
       'price': 59.0,
       'quantity': 1
     },
     {
       'title': 'Colorblock Scuba',
-      'imageSrc': 'https://stage-store-test.idntify.io/images/cart/two.png',
+      'imageSrc': 'assets/two.png',
       'subtitle': 'Web ID: 1089772',
       'price': 59.0,
       'quantity': 1
     },
     {
       'title': 'Colorblock Scuba',
-      'imageSrc': 'https://stage-store-test.idntify.io/images/cart/three.png',
+      'imageSrc': 'assets/three.png',
       'subtitle': 'Web ID: 1089772',
       'price': 59.0,
       'quantity': 1
