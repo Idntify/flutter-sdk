@@ -153,10 +153,10 @@ await api.addSelfie(selfiePicture, selfieVideo);
 
 ```
 
-### TODO
+## TODO
 
-- [] Write docs
-- [] Improve error handling
-- [] Improve `IdntifyApiService`
-- [] Refactor or rewrite `getCamera()`
-- [] Refactor to a clean `build()` in `Idntify` widget
+- [ ] Write docs
+- [ ] Improve error handling
+- [ ] Improve `IdntifyApiService`
+- [ ] Refactor or rewrite `getCamera()`
+- [ ] Refactor to a clean `build()` in `Idntify` widget
