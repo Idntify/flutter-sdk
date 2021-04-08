@@ -1,5 +1,7 @@
 # idntify_widget
 
+[![pub package](https://img.shields.io/pub/v/idntify_widget.svg)](https://pub.dartlang.org/packages/idntify_widget)
+
 A flutter plugin using the implementation of the [IDntify](idntify.io) service.
 
 ## Installation
@@ -153,10 +155,10 @@ await api.addSelfie(selfiePicture, selfieVideo);
 
 ```
 
-### TODO
+## TODO
 
-- [] Write docs
-- [] Improve error handling
-- [] Improve `IdntifyApiService`
-- [] Refactor or rewrite `getCamera()`
-- [] Refactor to a clean `build()` in `Idntify` widget
+- [ ] Write docs
+- [ ] Improve error handling
+- [ ] Improve `IdntifyApiService`
+- [ ] Refactor or rewrite `getCamera()`
+- [ ] Refactor to a clean `build()` in `Idntify` widget
