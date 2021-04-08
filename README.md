@@ -1,5 +1,7 @@
 # idntify_widget
 
+[![pub package](https://img.shields.io/pub/v/idntify_widget.svg)](https://pub.dartlang.org/packages/idntify_widget)
+
 A flutter plugin using the implementation of the [IDntify](idntify.io) service.
 
 ## Installation
