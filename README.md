@@ -1,6 +1,6 @@
 # idntify_widget
 
-A flutter plugin to use the implementation of the [IDntify](idntify.io) service.
+A flutter plugin using the implementation of the [IDntify](idntify.io) service.
 
 ## Installation
 
@@ -15,7 +15,7 @@ dependencies:
   camera:
 ```
 
-Due to the use on some package dependencies you'll need to change some configuration on your Flutter app.
+Due to the use of some package dependencies you'll need to change some configuration on your Flutter app.
 
 If you want to know more about these packages you can read the documentation of the [camera](https://pub.dev/packages/camera) and [image_picker](https://pub.dev/packages/image_picker) packages.
 
@@ -64,29 +64,33 @@ Add `android:requestLegacyExternalStorage="true"` as an attribute to the `<appli
 
 ## Usage
 
-Before starting to write code you must have already set your application 'origin' and genereated your API key.
+Before starting to write code you must have already set your application 'origin' and generated your API key.
 
-If everything is ready then it'd depend on what kind of integration would you like to use.
+If everything is ready then it depends on what kind of integration would you like to use.
 
-## Widget
+### Widget
 
 The widget goes through all the steps of the process doing all the though work for you. Keep in mind that each time the widget is recreated a new transaction process will be created.
 
-When the widget is rendered it'll try to expand as the same size of its parent widget.
+It's recommended to make the widget to expand as the same size of its parent widget if that's the case. Just use an `Expanded()` or a `Flexible()`;
 
-After that then it's time to write code!
+Now it's time to write code!
 
 You must need to get a list of the available cameras on the device. Don't worry, is a single line.
 
-Then you just call the Idntify widget with three required parameters: your API key, your 'origin' and your reference of the available cameras. You can also include the stage and the callbacks functions that executes when the user changes the current step and when the transaction is finished.
+Then you just call the Idntify widget with three required parameters: an API key, an 'origin' and a reference of the available cameras. You can also include the stage and the callback functions of certain events.
 
 Here is a simple example.
 
-## API
+```
 
-This works really simple. Just create an instance of the `IdntifyApiService` class sending your API key, your 'origin' and the stage.
+```
 
-At this point you just call the functions whenever you want. Keep in mind that the correct process is to create a transaction first, then add two documents and at the add the selfie and it'll retrieve if the transaction was completed.
+### API
+
+This works really simple. Just create an instance of the `IdntifyApiService` class sending an API key, an 'origin' and the stage.
+
+At this point you just call the functions whenever you want. Keep in mind that the correct process is to create a transaction first, then add two documents, at the add the selfie and it'll retrieve if the transaction was completed.
 
 Here is a simple example.
 
@@ -112,5 +116,3 @@ Uint8list selfieVideo = your_file_in_bytes;
 await api.addSelfie(selfiePicture, selfieVideo);
 
 ```
-
-

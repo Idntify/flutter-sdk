@@ -77,7 +77,8 @@ class _IdnitfyState extends State<Idntify> {
   void initState() {
     super.initState();
 
-    _apiService = IdntifyApiService(widget.apiKey, widget.origin, stage: widget.stage);
+    _apiService =
+        IdntifyApiService(widget.apiKey, widget.origin, stage: widget.stage);
   }
 
   @override
@@ -222,7 +223,8 @@ class _IdnitfyState extends State<Idntify> {
               Button(
                 'Cancelar',
                 alternative: true,
-                onPressed: () => setState(() => {_loadFiles = false, _frontalID = null, _reverseID = null}),
+                onPressed: () => setState(() =>
+                    {_loadFiles = false, _frontalID = null, _reverseID = null}),
               )
             },
           }
@@ -268,31 +270,32 @@ class _IdnitfyState extends State<Idntify> {
                           try {
                             Uint8List image = await pickImage(_imagePicker);
 
-                              setState(() {
-                                _frontalID != null
-                                    ? _reverseID = image
-                                    : _frontalID = image;
-                                _loadingImage = true;
-                              });
+                            setState(() {
+                              _frontalID != null
+                                  ? _reverseID = image
+                                  : _frontalID = image;
+                              _loadingImage = true;
+                            });
 
-                              await setImage(
-                                  image,
-                                  _apiService,
-                                  _frontalID != null && _reverseID == null
-                                      ? DocumentType.frontal
-                                      : DocumentType.back);
+                            await setImage(
+                                image,
+                                _apiService,
+                                _frontalID != null && _reverseID == null
+                                    ? DocumentType.frontal
+                                    : DocumentType.back);
 
-                              await Future.delayed(Duration(seconds: 10));
+                            await Future.delayed(Duration(seconds: 10));
 
-                              setState(() =>
-                                  {_loadingImage = false, _loadedImage = true});
+                            setState(() =>
+                                {_loadingImage = false, _loadedImage = true});
                           } catch (error) {
                             print(error);
                             setState(() {
                               _loadingImage = false;
                               _loadedImage = false;
-                              _frontalID != null && _reverseID == null 
-                                  ? _frontalID = null : _reverseID = null;
+                              _frontalID != null && _reverseID == null
+                                  ? _frontalID = null
+                                  : _reverseID = null;
                             });
                           }
                         })
@@ -335,7 +338,7 @@ class _IdnitfyState extends State<Idntify> {
                     _showLogo = true;
                   }
                 });
-                  
+
                 widget.onStepChange?.call(currentStep);
               } catch (error) {
                 print(error);
@@ -462,7 +465,7 @@ class _IdnitfyState extends State<Idntify> {
             Image.asset('assets/icons/logo.png',
                 scale: 1.6, package: 'idntify_widget')
           },
-          _widgeToRender ?? Container()
+          _widgeToRender
         ],
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
       ),

@@ -8,7 +8,7 @@ Future<Uint8List> pickImage(ImagePicker imagePicker) async {
   try {
     final PickedFile pickedFile =
         await imagePicker.getImage(source: ImageSource.gallery);
-    
+
     if (pickedFile == null) {
       throw 'No image selected';
     }
