@@ -32,13 +32,13 @@ class IdntifyApiService {
       IdntifyResponse parsedBody = IdntifyResponse.fromJson(body);
 
       if (res.statusCode != 200) {
-        print('Server error: ${body}');
+        print('Server error: $body');
         return Future.error(parsedBody);
       }
 
       _transactionKey = parsedBody.data['transactionToken'];
     } catch (error) {
-      print('Client error: ${error}');
+      print('Client error: $error');
       return Future.error(error);
     }
   }
@@ -51,7 +51,7 @@ class IdntifyApiService {
       print(type);
       final String dataB64 = base64Encode(data.toList());
       final Map<String, String> payload = {
-        'd': 'data:image/png;base64,${dataB64}',
+        'd': 'data:image/png;base64,$dataB64',
         's': type.name
       };
       Response res = await post(Uri.https(_base, endpoint),
@@ -61,11 +61,11 @@ class IdntifyApiService {
       IdntifyResponse parsedBody = IdntifyResponse.fromJson(body);
 
       if (res.statusCode != 200) {
-        print('Server error: ${body}');
+        print('Server error: $body');
         return Future.error(parsedBody);
       }
     } catch (error) {
-      print('Client error: ${error}');
+      print('Client error: $error');
       return Future.error(error);
     }
   }
@@ -79,7 +79,7 @@ class IdntifyApiService {
       final String imageB64 = base64Encode(selfieImageData.toList());
       final String videoB64 = base64Encode(selfieVideoData.toList());
       final Map<String, String> payload = {
-        'd': 'data:image/png;base64,${imageB64}',
+        'd': 'data:image/png;base64,$imageB64',
         's': 's',
         't': 'video/mp4',
         'v': videoB64
@@ -92,11 +92,11 @@ class IdntifyApiService {
       IdntifyResponse parsedBody = IdntifyResponse.fromJson(body);
 
       if (res.statusCode != 200) {
-        print('Server error: ${body}');
+        print('Server error: $body');
         return Future.error(parsedBody);
       }
     } catch (error) {
-      print('Client error: ${error}');
+      print('Client error: $error');
       return Future.error(error);
     }
   }

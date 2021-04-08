@@ -13,9 +13,9 @@ dependencies:
   
   http: ^0.13.1
   extended_image: ^3.0.0
-  image_editor: any
+  image_editor: ^1.0.0
   image_picker: ^0.7.2
-  camera:
+  camera: ^0.8.1
 
 dev_dependencies:
   flutter_test:
