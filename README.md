@@ -83,7 +83,43 @@ Then you just call the Idntify widget with three required parameters: an API key
 Here is a simple example.
 
 ```
+import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+import 'package:idntify_widget/idntify_widget.dart';
 
+List<CameraDescription> cameras;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  cameras = await availableCameras();
+
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        title: 'Example',
+        theme: ThemeData(
+            primarySwatch: Colors.blue,
+        ),
+        home: Scaffold(
+        appBar: AppBar(
+            title: Text('Simple Example'),
+        ),
+        body: Idntify(
+          '<<YOUR API_KEY>>',
+          '<<YOUR ORIGIN>>',
+          cameras,
+          stage: Stage.dev, //Stage.prod
+          onTransactionFinished: () => print('finished'),
+          onStepChange: (step) => print('step: ${step}')
+      )
+    );
+  }
+}
 ```
 
 ### API
@@ -116,3 +152,11 @@ Uint8list selfieVideo = your_file_in_bytes;
 await api.addSelfie(selfiePicture, selfieVideo);
 
 ```
+
+### TODO
+
+- [] Write docs
+- [] Improve error handling
+- [] Improve `IdntifyApiService`
+- [] Refactor or rewrite `getCamera()`
+- [] Refactor to a clean `build()` in `Idntify` widget
