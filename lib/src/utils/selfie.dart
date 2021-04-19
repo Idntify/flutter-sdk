@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:idntify_widget/idntify_widget.dart';
 
-Future<void> getSelfie(
+Future<Map<String, Uint8List>> getSelfie(
     CameraController cameraController, IdntifyApiService apiService) async {
   await cameraController.prepareForVideoRecording();
   await cameraController.startVideoRecording();
@@ -19,5 +19,5 @@ Future<void> getSelfie(
   Uint8List videoBytes = await video.readAsBytes();
   Uint8List imageBytes = await image.readAsBytes();
 
-  await apiService.addSelfie(imageBytes, videoBytes);
+  return {'video': videoBytes, 'image': imageBytes};
 }

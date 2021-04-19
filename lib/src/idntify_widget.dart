@@ -11,7 +11,6 @@ import 'package:idntify_widget/src/models/document_type.dart';
 import 'package:idntify_widget/src/models/image_picker_icon.dart';
 import 'package:idntify_widget/src/models/info_icon.dart';
 import 'package:idntify_widget/src/models/instruction_image.dart';
-import 'package:idntify_widget/src/models/response.dart';
 import 'package:idntify_widget/src/models/stage.dart';
 import 'package:idntify_widget/src/models/text_icon.dart';
 import 'package:idntify_widget/src/utils/crop.dart';
@@ -127,7 +126,9 @@ class _IdnitfyState extends State<Idntify> {
 
   Future<void> _handleSelfie() async {
     try {
-      await getSelfie(_cameraController, _apiService);
+      final Map<String, Uint8List> bytes = await getSelfie(_cameraController, _apiService);
+
+      await _apiService.addSelfie(bytes['image'], bytes['video']);
 
       setState(() {
         currentStep = 9;
@@ -159,16 +160,12 @@ class _IdnitfyState extends State<Idntify> {
               if (snapshot.hasError) {
                 var error = snapshot.error;
 
+                print(error);
                 return Info(
                   title: 'ERROR',
                   texts: [
-                    if (error is IdntifyResponse) ...{
-                      InfoText(error.error, color: Colors.red, bold: true),
-                      InfoText(error.message, color: Colors.red),
-                    } else ...{
-                      InfoText(error.toString() ?? '',
+                      InfoText(error.toString(),
                           color: Colors.red, bold: true)
-                    }
                   ],
                 );
               }

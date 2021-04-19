@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'dart:convert';
 
 import 'package:idntify_widget/src/models/document_type.dart';
+import 'package:idntify_widget/src/models/error.dart';
 import 'package:idntify_widget/src/models/response.dart';
 import 'package:idntify_widget/src/models/stage.dart';
 
@@ -19,7 +20,7 @@ class IdntifyApiService {
         this.stage == Stage.dev ? 'api.stage.idntify.io' : 'api.idntify.io';
   }
 
-  Future<void> createTransaction() async {
+  Future<IdntifyResponse> createTransaction() async {
     const String endpoint = 'v1/widget/transaction';
     final Map<String, String> headers = {'x-api-key': apiKey};
     Map<String, String> payload = {'origin': origin};
@@ -32,23 +33,22 @@ class IdntifyApiService {
       IdntifyResponse parsedBody = IdntifyResponse.fromJson(body);
 
       if (res.statusCode != 200) {
-        print('Server error: $body');
-        return Future.error(parsedBody);
+        return Future.error(_handleResponseError(res.statusCode, parsedBody));
       }
 
       _transactionKey = parsedBody.data['transactionToken'];
+
+      return parsedBody;
     } catch (error) {
-      print('Client error: $error');
       return Future.error(error);
     }
   }
 
-  Future<void> addDocument(Uint8List data, DocumentType type) async {
+  Future<IdntifyResponse> addDocument(Uint8List data, DocumentType type) async {
     const String endpoint = 'v1/widget/transaction/document';
     final Map<String, String> headers = {'x-transaction-key': _transactionKey};
 
     try {
-      print(type);
       final String dataB64 = base64Encode(data.toList());
       final Map<String, String> payload = {
         'd': 'data:image/png;base64,$dataB64',
@@ -61,16 +61,16 @@ class IdntifyApiService {
       IdntifyResponse parsedBody = IdntifyResponse.fromJson(body);
 
       if (res.statusCode != 200) {
-        print('Server error: $body');
-        return Future.error(parsedBody);
+        return Future.error(_handleResponseError(res.statusCode, parsedBody));
       }
+
+      return parsedBody;
     } catch (error) {
-      print('Client error: $error');
       return Future.error(error);
     }
   }
 
-  Future<void> addSelfie(
+  Future<IdntifyResponse> addSelfie(
       Uint8List selfieImageData, Uint8List selfieVideoData) async {
     const String endpoint = 'v1/widget/transaction/document/selfie';
     final Map<String, String> headers = {'x-transaction-key': _transactionKey};
@@ -92,12 +92,28 @@ class IdntifyApiService {
       IdntifyResponse parsedBody = IdntifyResponse.fromJson(body);
 
       if (res.statusCode != 200) {
-        print('Server error: $body');
-        return Future.error(parsedBody);
+        return Future.error(_handleResponseError(res.statusCode, parsedBody));
       }
+
+      return parsedBody;
     } catch (error) {
-      print('Client error: $error');
       return Future.error(error);
+    }
+  }
+
+  dynamic _handleResponseError(int statusCode, IdntifyResponse response) {
+    final String errorCode = response.error;
+    final String errorMessage = response.message;
+    final String error = "$errorMessage ($errorCode)";
+
+    switch (statusCode) {
+      case 400:
+        return BadRequestException(error);
+      case 401:
+      case 403:
+        return UnauthorisedException(error);
+      default:
+        return InternalServerException(error);
     }
   }
 }

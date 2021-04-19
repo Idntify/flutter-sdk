@@ -151,14 +151,17 @@ Uint8List selfiePicture = your_file_in_bytes;
 // A 1-2 seconds video.
 Uint8list selfieVideo = your_file_in_bytes;
 
-await api.addSelfie(selfiePicture, selfieVideo);
+// If you want to access to the properties of the response object
+final IdntifyResponse response = await api.addSelfie(selfiePicture, selfieVideo);
+
+print('$response.message');
 
 ```
 
 ## TODO
 
 - [ ] Write docs
-- [ ] Improve error handling
-- [ ] Improve `IdntifyApiService`
+- [*] Improve error handling
+- [*] Improve `IdntifyApiService`
 - [ ] Refactor or rewrite `getCamera()`
-- [ ] Refactor to a clean `build()` in `Idntify` widget
+- [ ] Refactor to a clean `build()` in `Idntify` widget. Optional: use routes.
