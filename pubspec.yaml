@@ -1,6 +1,6 @@
 name: idntify_widget
 description: Flutter SDK implementation of the IDntify service.
-version: 1.0.0
+version: 1.1.0
 homepage: https://github.com/Idntify/flutter-sdk
 
 environment:

@@ -165,3 +165,4 @@ print('$response.message');
 - [*] Improve `IdntifyApiService`
 - [ ] Refactor or rewrite `getCamera()`
 - [ ] Refactor to a clean `build()` in `Idntify` widget. Optional: use routes.
+- [ ] Add response support.
