@@ -26,6 +26,6 @@ class NotFoundException extends IdntifyException {
 
 // 500
 class InternalServerException extends IdntifyException {
-  InternalServerException([message]) : super(message, "Internal Server Error: ");
+  InternalServerException([message])
+      : super(message, "Internal Server Error: ");
 }
-
