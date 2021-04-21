@@ -161,8 +161,8 @@ print('$response.message');
 ## TODO
 
 - [ ] Write docs
-- [*] Improve error handling
-- [*] Improve `IdntifyApiService`
+- [x] Improve error handling
+- [x] Improve `IdntifyApiService`
 - [ ] Refactor or rewrite `getCamera()`
 - [ ] Refactor to a clean `build()` in `Idntify` widget. Optional: use routes.
 - [ ] Add response support.
