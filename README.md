@@ -163,6 +163,7 @@ print('$response.message');
 - [ ] Write docs
 - [x] Improve error handling
 - [x] Improve `IdntifyApiService`
-- [ ] Refactor or rewrite `getCamera()`
-- [ ] Refactor to a clean `build()` in `Idntify` widget. Optional: use routes.
-- [ ] Add response support.
+- [x] Refactor or rewrite `getCamera()`
+- [x] Refactor to a clean `build()` in `Idntify` widget. Optional: use routes.
+- [ ] Add responsive support.
+- [ ] Test exhaustively on iOS.
