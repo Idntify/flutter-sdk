@@ -15,10 +15,12 @@ class Info extends StatelessWidget {
   Info({this.icon, this.title, this.texts, this.buttons, this.imagePicker});
 
   Widget build(context) {
+    double width = MediaQuery.of(context).size.width;
+
     return Expanded(
         child: Column(children: <Widget>[
       if (icon != null) ...{
-        Image.asset(icon.name, scale: 1.6, package: 'idntify_widget')
+        Image.asset(icon.name, scale: width < 400 ? 2.2 : 1.6, package: 'idntify_widget')
       },
       if (title != null) ...{
         InfoText(title, bold: true, size: 24, color: Colors.black)

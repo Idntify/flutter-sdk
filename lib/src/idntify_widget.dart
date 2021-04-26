@@ -95,13 +95,10 @@ class _IdnitfyState extends State<Idntify> {
         throw 'No cameras available.';
       }
 
-      final front = widget.cameras
-          .where((camera) => camera.lensDirection == CameraLensDirection.front);
-      final back = widget.cameras
-          .where((camera) => camera.lensDirection == CameraLensDirection.back);
-
-      _frontCamera = front.first ?? null;
-      _backCamera = back.first ?? null;
+      final _frontCamera = widget.cameras
+          .firstWhere((camera) => camera.lensDirection == CameraLensDirection.front, orElse: () => null);
+      final _backCamera = widget.cameras
+          .firstWhere((camera) => camera.lensDirection == CameraLensDirection.back, orElse: () => null);
 
       _hasBothCameras = _frontCamera != null && _backCamera != null;
 
@@ -249,6 +246,7 @@ class _IdnitfyState extends State<Idntify> {
   }
 
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20.0),
@@ -260,7 +258,7 @@ class _IdnitfyState extends State<Idntify> {
         children: <Widget>[
           if (_showLogo) ...{
             Image.asset('assets/icons/logo.png',
-                scale: 1.6, package: 'idntify_widget')
+                scale: width < 400 ? 2 : 1.6, package: 'idntify_widget')
           },
           _loadProcess()
         ],

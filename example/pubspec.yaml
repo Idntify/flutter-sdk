@@ -7,7 +7,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  permission_handler: 5.1.0
   camera:
   numberpicker: ^2.0.1
   idntify_widget:

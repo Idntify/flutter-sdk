@@ -2,17 +2,11 @@ import 'package:camera/camera.dart';
 import 'package:example/cart_element.dart';
 import 'package:flutter/material.dart';
 import 'package:idntify_widget/idntify_widget.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 List<CameraDescription> cameras;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await [
-    Permission.location,
-    Permission.storage,
-  ].request();
 
   cameras = await availableCameras();
 
@@ -161,6 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         _executeIdntifyProcess = false,
                         _idntifyProcessCompleted = true
                       }),
+                  onStepChange: print,
                 ))
               }
             ])));

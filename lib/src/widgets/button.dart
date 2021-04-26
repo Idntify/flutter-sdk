@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:idntify_widget/src/widgets/text.dart';
 
 class Button extends StatelessWidget {
   final bool alternative;
@@ -10,11 +11,10 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     return alternative
         ? OutlinedButton(
-            child: Text(text,
-                style: TextStyle(
-                    fontSize: 18,
+            child: InfoText(text,
+                    size: 18,
                     color: Color.fromRGBO(44, 47, 124, 1),
-                    fontFamily: 'Inter')),
+                    ),
             onPressed: onPressed,
             style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.all(15.0),
@@ -22,7 +22,7 @@ class Button extends StatelessWidget {
                     width: 2, color: Color.fromRGBO(44, 47, 124, 1))))
         : ElevatedButton(
             child:
-                Text(text, style: TextStyle(fontSize: 18, fontFamily: 'Inter')),
+                InfoText(text, size: 18, color: Colors.white),
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.all(15.0),

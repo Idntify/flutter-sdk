@@ -18,6 +18,15 @@ class InfoText extends StatelessWidget {
       this.padding = 0});
 
   Widget build(context) {
+    double width = MediaQuery.of(context).size.width;
+    double finalSize = size;
+    double iconSize = 35;
+
+    if (width <= 350) {
+      finalSize -= 4;
+      iconSize -= 5;
+    }
+
     return Padding(
         padding: EdgeInsets.only(top: padding, bottom: padding),
         child: icon != null
@@ -25,14 +34,14 @@ class InfoText extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(right: 12),
                   child: Image.asset(icon.name,
-                      height: 35, width: 35, package: 'idntify_widget'),
+                      height: iconSize, width: iconSize, package: 'idntify_widget'),
                 ),
                 Flexible(
                     child: Text(text,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: color,
-                            fontSize: size,
+                            fontSize: finalSize,
                             fontWeight:
                                 bold ? FontWeight.bold : FontWeight.normal,
                             fontFamily: 'Inter')))
@@ -42,7 +51,7 @@ class InfoText extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: color,
-                    fontSize: size,
+                    fontSize: finalSize,
                     fontWeight: bold ? FontWeight.bold : FontWeight.normal,
                     fontFamily: 'Inter'),
               ));
