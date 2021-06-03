@@ -1,7 +1,7 @@
 enum InfoIcon { identity, photo, selfie, complete }
 
-extension InfoIconExension on InfoIcon {
-  String get name {
+extension InfoIconExension on InfoIcon? {
+  String? get name {
     switch (this) {
       case InfoIcon.identity:
         return 'assets/icons/identity.png';

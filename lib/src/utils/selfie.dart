@@ -4,7 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:idntify_widget/idntify_widget.dart';
 
 Future<Map<String, Uint8List>> getSelfie(
-    CameraController cameraController, IdntifyApiService apiService) async {
+    CameraController cameraController, IdntifyApiService? apiService) async {
   await cameraController.prepareForVideoRecording();
   await cameraController.startVideoRecording();
 

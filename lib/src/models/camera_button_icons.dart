@@ -1,7 +1,9 @@
+// Possible values for an icon.
 enum CameraButtonIcons { record, recordActive, flip }
 
+// File reference given an enum value
 extension CameraButtonIconsImplementation on CameraButtonIcons {
-  String get name {
+  String? get name {
     switch (this) {
       case CameraButtonIcons.record:
         return 'assets/icons/record.png';

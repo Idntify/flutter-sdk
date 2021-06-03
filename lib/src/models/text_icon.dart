@@ -1,7 +1,7 @@
 enum TextIcon { first, second, front, reverse }
 
-extension TextIconExtension on TextIcon {
-  String get name {
+extension TextIconExtension on TextIcon? {
+  String? get name {
     switch (this) {
       case TextIcon.first:
         return 'assets/icons/instruction1.png';

@@ -8,7 +8,7 @@ import 'package:extended_image/extended_image.dart';
 
 class Cropper extends StatelessWidget {
   final editorKey;
-  final Uint8List image;
+  final Uint8List? image;
   final bool loading;
   final onRetry;
   final onContinue;
@@ -19,7 +19,7 @@ class Cropper extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Widget> defaultWidgets = [
       Flexible(
-        child: ExtendedImage.memory(image,
+        child: ExtendedImage.memory(image!,
             fit: BoxFit.contain,
             mode: ExtendedImageMode.editor,
             extendedImageEditorKey: editorKey),

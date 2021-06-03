@@ -1,7 +1,7 @@
 enum ImagePickerIcon { load, loading, loaded }
 
 extension ImagePickerIconExtension on ImagePickerIcon {
-  String get name {
+  String? get name {
     switch (this) {
       case ImagePickerIcon.load:
         return 'assets/icons/upload-icon.png';

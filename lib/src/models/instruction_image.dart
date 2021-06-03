@@ -1,7 +1,7 @@
 enum InstructionImage { front, reverse, selfie }
 
 extension InstructionImageExtension on InstructionImage {
-  String get name {
+  String? get name {
     switch (this) {
       case InstructionImage.front:
         return 'assets/icons/front.png';

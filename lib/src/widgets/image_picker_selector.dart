@@ -5,7 +5,7 @@ import 'package:idntify_widget/src/models/text_icon.dart';
 import 'package:idntify_widget/src/widgets/text.dart';
 
 class ImagePickerSelector extends StatelessWidget {
-  final TextIcon textIcon;
+  final TextIcon? textIcon;
   final ImagePickerIcon icon;
   final String text;
   final onTap;
@@ -17,7 +17,7 @@ class ImagePickerSelector extends StatelessWidget {
       child: Container(
           child: Column(children: <Widget>[
             InfoText(text, color: Colors.black, icon: textIcon),
-            Image.asset(icon.name, height: 30, package: 'idntify_widget')
+            Image.asset(icon.name!, height: 30, package: 'idntify_widget')
           ]),
           width: 250,
           padding: EdgeInsets.all(10),

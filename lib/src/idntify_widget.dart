@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -28,13 +29,13 @@ import 'package:image_picker/image_picker.dart';
 class Idntify extends StatefulWidget {
   final String apiKey;
   final String origin;
-  final Stage stage;
+  final Stage? stage;
   final List<CameraDescription> cameras;
-  final void Function(int) onStepChange;
-  final void Function() onTransactionFinished;
+  final void Function(int)? onStepChange;
+  final void Function()? onTransactionFinished;
 
   Idntify(this.apiKey, this.origin, this.cameras,
-      {Key key, this.stage, this.onStepChange, this.onTransactionFinished})
+      {Key? key, this.stage, this.onStepChange, this.onTransactionFinished})
       : super(key: key);
 
   @override
@@ -44,18 +45,18 @@ class Idntify extends StatefulWidget {
 class _IdnitfyState extends State<Idntify> {
   final GlobalKey<ExtendedImageEditorState> _editorKey =
       GlobalKey<ExtendedImageEditorState>();
-  IdntifyApiService _apiService;
+  IdntifyApiService? _apiService;
   int currentStep = 1;
   // Image picker controller.
   final ImagePicker _imagePicker = ImagePicker();
   // Camera reference and controller.
-  CameraDescription _frontCamera;
-  CameraDescription _backCamera;
-  CameraController _cameraController;
+  CameraDescription? _frontCamera;
+  CameraDescription? _backCamera;
+  CameraController? _cameraController;
 
   // Picture of the ID front.
-  Uint8List _frontalID;
-  Uint8List _reverseID;
+  Uint8List? _frontalID;
+  Uint8List? _reverseID;
   // Status.
   bool _loadFiles = false;
   bool _takePicture = false;
@@ -86,7 +87,7 @@ class _IdnitfyState extends State<Idntify> {
   }
 
   // This code needs to be rewritten or refactored
-  Future<void> getCamera(
+  Future<dynamic> getCamera(
       {bool flip = false,
       CameraLensDirection cameraToSet = CameraLensDirection.back}) async {
     try {
@@ -94,16 +95,16 @@ class _IdnitfyState extends State<Idntify> {
         throw 'No cameras available.';
       }
 
-      final _frontCamera = widget.cameras
-          .firstWhere((camera) => camera.lensDirection == CameraLensDirection.front, orElse: () => null);
-      final _backCamera = widget.cameras
-          .firstWhere((camera) => camera.lensDirection == CameraLensDirection.back, orElse: () => null);
+      final _frontCamera = widget.cameras.firstWhereOrNull(
+          (camera) => camera.lensDirection == CameraLensDirection.front);
+      final _backCamera = widget.cameras.firstWhereOrNull(
+          (camera) => camera.lensDirection == CameraLensDirection.back);
 
       _hasBothCameras = _frontCamera != null && _backCamera != null;
 
       if (_frontCamera != null || _backCamera != null) {
         if (flip && _cameraController != null) {
-          final currentCamera = _cameraController.description.lensDirection;
+          final currentCamera = _cameraController!.description.lensDirection;
 
           cameraToSet = currentCamera == CameraLensDirection.front
               ? CameraLensDirection.back
@@ -112,12 +113,12 @@ class _IdnitfyState extends State<Idntify> {
 
         _cameraController = CameraController(
             cameraToSet == CameraLensDirection.front
-                ? _frontCamera ?? _backCamera
-                : _backCamera ?? _frontCamera,
+                ? _frontCamera ?? _backCamera!
+                : _backCamera ?? _frontCamera!,
             ResolutionPreset.high);
       }
 
-      await _cameraController.initialize();
+      await _cameraController!.initialize();
     } catch (error) {
       print(error);
       return error;
@@ -126,7 +127,7 @@ class _IdnitfyState extends State<Idntify> {
 
   Future<void> _handleIdPhoto() async {
     try {
-      final XFile image = await _cameraController.takePicture();
+      final XFile image = await _cameraController!.takePicture();
       final Uint8List imageBytes = await image.readAsBytes();
 
       await _cameraController?.dispose();
@@ -154,9 +155,9 @@ class _IdnitfyState extends State<Idntify> {
   Future<void> _handleSelfie() async {
     try {
       final Map<String, Uint8List> bytes =
-          await getSelfie(_cameraController, _apiService);
+          await getSelfie(_cameraController!, _apiService);
 
-      await _apiService.addSelfie(bytes['image'], bytes['video']);
+      await _apiService!.addSelfie(bytes['image']!, bytes['video']!);
 
       await _cameraController?.dispose();
 
@@ -176,9 +177,10 @@ class _IdnitfyState extends State<Idntify> {
     try {
       setState(() => _loadingImage = true);
 
-      final result = await CropImage().getImage(_editorKey);
+      final result =
+          await (CropImage().getImage(_editorKey) as FutureOr<Uint8List>);
 
-      await _apiService.addDocument(
+      await _apiService!.addDocument(
           result,
           _frontalID != null && _reverseID == null
               ? DocumentType.frontal
@@ -201,8 +203,7 @@ class _IdnitfyState extends State<Idntify> {
       });
     } catch (error) {
       setState(() => {
-            currentStep =
-                _frontalIDLoaded && !_reverseIDLoaded ? 3 : 5,
+            currentStep = _frontalIDLoaded && !_reverseIDLoaded ? 3 : 5,
             _loadingImage = false,
             _takePicture = false
           });
@@ -215,23 +216,20 @@ class _IdnitfyState extends State<Idntify> {
       Uint8List image = await pickImage(_imagePicker);
 
       setState(() {
-        _frontalID != null
-            ? _reverseID = image
-            : _frontalID = image;
+        _frontalID != null ? _reverseID = image : _frontalID = image;
         _loadingImage = true;
       });
 
       await setImage(
           image,
-          _apiService,
+          _apiService!,
           _frontalID != null && _reverseID == null
               ? DocumentType.frontal
               : DocumentType.back);
 
       await Future.delayed(Duration(seconds: 10));
 
-      setState(
-          () => {_loadingImage = false, _loadedImage = true});
+      setState(() => {_loadingImage = false, _loadedImage = true});
     } catch (error) {
       print(error);
       setState(() {
@@ -278,7 +276,9 @@ class _IdnitfyState extends State<Idntify> {
           final String text = _frontalIDLoaded
               ? 'Captura el reverso de tu INE'
               : 'Captura el frente de tu INE';
-          final InstructionImage image = _frontalIDLoaded ? InstructionImage.reverse : InstructionImage.front;
+          final InstructionImage image = _frontalIDLoaded
+              ? InstructionImage.reverse
+              : InstructionImage.front;
           return _showInstructions(text, image);
         }
 
@@ -289,9 +289,10 @@ class _IdnitfyState extends State<Idntify> {
       case 7:
         return _showSelfieInfo();
       case 8:
-        return !_takePicture ?
-          _showInstructions('Captura de selfie', InstructionImage.selfie, cameraToSet: CameraLensDirection.front)
-          : _captureSelfie(); 
+        return !_takePicture
+            ? _showInstructions('Captura de selfie', InstructionImage.selfie,
+                cameraToSet: CameraLensDirection.front)
+            : _captureSelfie();
       case 9:
         return _processFinished();
       default:
@@ -301,7 +302,7 @@ class _IdnitfyState extends State<Idntify> {
 
   Widget _initProcess() {
     return FutureBuilder(
-        future: _apiService.createTransaction(),
+        future: _apiService!.createTransaction(),
         builder: (contextFutureBuilder, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Flexible(
@@ -356,8 +357,8 @@ class _IdnitfyState extends State<Idntify> {
         Button(
           'Cancelar',
           alternative: true,
-          onPressed: () => setState(() =>
-              {_loadFiles = false, _frontalID = null, _reverseID = null}),
+          onPressed: () => setState(
+              () => {_loadFiles = false, _frontalID = null, _reverseID = null}),
         )
       },
     ];
@@ -370,8 +371,8 @@ class _IdnitfyState extends State<Idntify> {
     if (_frontalID != null && _reverseID == null && _loadedImage) {
       Timer(
           Duration(seconds: 1),
-          () => setState(
-              () => {_loadedImage = false, _frontalIDLoaded = true}));
+          () =>
+              setState(() => {_loadedImage = false, _frontalIDLoaded = true}));
     }
 
     if (_reverseID != null && _loadedImage) {
@@ -394,9 +395,7 @@ class _IdnitfyState extends State<Idntify> {
                       ? ImagePickerIcon.loaded
                       : ImagePickerIcon.load,
               textIcon: TextIcon.front,
-              onTap: _loadingImage
-                  ? null
-                  : _handlePickerImage)
+              onTap: _loadingImage ? null : _handlePickerImage)
           : null,
       buttons: buttons,
     );
@@ -407,37 +406,35 @@ class _IdnitfyState extends State<Idntify> {
       InfoText(
           'Usa las cámaras de tu teléfono para tomar una foto por cada lado de tu INE.',
           padding: 5),
-        InfoText('Requerimos de:', bold: true, padding: 5),
-        InfoText('1 foto de la parte frontal',
-            icon: TextIcon.front, padding: 10),
-        InfoText('1 foto de la parte posterior',
-            icon: TextIcon.reverse, padding: 10),
+      InfoText('Requerimos de:', bold: true, padding: 5),
+      InfoText('1 foto de la parte frontal', icon: TextIcon.front, padding: 10),
+      InfoText('1 foto de la parte posterior',
+          icon: TextIcon.reverse, padding: 10),
     ];
     List<Button> buttons = [
-        Button(
-          'Cargar archivos',
-          alternative: true,
-          onPressed: () => setState(() => _loadFiles = true),
-        ),
-        Button('Tomar foto', onPressed: () {
-          setState(() => {currentStep = 3, _showLogo = false});
-          widget.onStepChange?.call(currentStep);
-        })
+      Button(
+        'Cargar archivos',
+        alternative: true,
+        onPressed: () => setState(() => _loadFiles = true),
+      ),
+      Button('Tomar foto', onPressed: () {
+        setState(() => {currentStep = 3, _showLogo = false});
+        widget.onStepChange?.call(currentStep);
+      })
     ];
-    
+
     return Info(
       icon: InfoIcon.photo,
       title: 'Foto de identificación',
       texts: texts,
       buttons: buttons,
     );
-
   }
 
   Widget _takeIdPhoto() {
     return FutureBuilder(
         future: getCamera(flip: _flipCamera),
-          builder: (contextFutureBuilder, snapshot) {
+        builder: (contextFutureBuilder, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Flexible(
               child: Column(
@@ -452,13 +449,14 @@ class _IdnitfyState extends State<Idntify> {
 
             print(error);
 
-            Timer(Duration(seconds: 5), () => setState(
-          () => {_takePicture = false}));
+            Timer(Duration(seconds: 5),
+                () => setState(() => {_takePicture = false}));
 
             return Info(
               title: 'ERROR',
               texts: [
-                InfoText('Error al inicializar la cámara... reintentando', color: Colors.red, bold: true)
+                InfoText('Error al inicializar la cámara... reintentando',
+                    color: Colors.red, bold: true)
               ],
             );
           }
@@ -474,8 +472,7 @@ class _IdnitfyState extends State<Idntify> {
             takePhoto: _handleIdPhoto,
             changeCamera: () => setState(() => _flipCamera = true),
           );
-        }
-    );
+        });
   }
 
   Widget _cropper() {
@@ -483,11 +480,8 @@ class _IdnitfyState extends State<Idntify> {
       _editorKey,
       !_frontalIDLoaded ? _frontalID : _reverseID,
       loading: _loadingImage,
-      onRetry: () => setState(
-          () => {currentStep -= 1}),
-      onContinue: _loadingImage
-          ? () {}
-          : _handleCropper,
+      onRetry: () => setState(() => {currentStep -= 1}),
+      onContinue: _loadingImage ? () {} : _handleCropper,
     );
   }
 
@@ -518,9 +512,11 @@ class _IdnitfyState extends State<Idntify> {
     );
   }
 
-  Widget _showInstructions(String text, InstructionImage image, {int seconds: 4, CameraLensDirection cameraToSet: CameraLensDirection.back}) {
-    Timer(Duration(seconds: seconds), () =>
-        setState(() => _takePicture = true));
+  Widget _showInstructions(String text, InstructionImage image,
+      {int seconds: 4,
+      CameraLensDirection cameraToSet: CameraLensDirection.back}) {
+    Timer(
+        Duration(seconds: seconds), () => setState(() => _takePicture = true));
 
     return Instructions(text, image);
   }
@@ -528,7 +524,7 @@ class _IdnitfyState extends State<Idntify> {
   Widget _captureSelfie() {
     return FutureBuilder(
         future: getCamera(cameraToSet: CameraLensDirection.front),
-          builder: (contextFutureBuilder, snapshot) {
+        builder: (contextFutureBuilder, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Flexible(
               child: Column(
@@ -543,13 +539,14 @@ class _IdnitfyState extends State<Idntify> {
 
             print(error);
 
-            Timer(Duration(seconds: 5), () => setState(
-          () => {_takePicture = false}));
+            Timer(Duration(seconds: 5),
+                () => setState(() => {_takePicture = false}));
 
             return Info(
               title: 'ERROR',
               texts: [
-                InfoText('Error al inicializar la cámara... reintentando', color: Colors.red, bold: true)
+                InfoText('Error al inicializar la cámara... reintentando',
+                    color: Colors.red, bold: true)
               ],
             );
           }
@@ -561,8 +558,7 @@ class _IdnitfyState extends State<Idntify> {
             takePhoto: _handleSelfie,
             recording: true,
           );
-        }
-    );
+        });
   }
 
   Widget _processFinished() {

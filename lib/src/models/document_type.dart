@@ -1,7 +1,7 @@
 enum DocumentType { back, frontal }
 
 extension DocumentTypeExtension on DocumentType {
-  String get name {
+  String? get name {
     switch (this) {
       case DocumentType.back:
         return 'b';

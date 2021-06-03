@@ -9,16 +9,16 @@ import 'package:idntify_widget/src/widgets/text.dart';
 import 'package:camera/camera.dart';
 
 class Camera extends StatefulWidget {
-  final CameraController cameraController;
-  final GestureTapCallback takePhoto;
-  final GestureTapCallback changeCamera;
-  final bool changeCameraOption;
-  final String text;
-  final TextIcon textIcon;
+  final CameraController? cameraController;
+  final GestureTapCallback? takePhoto;
+  final GestureTapCallback? changeCamera;
+  final bool? changeCameraOption;
+  final String? text;
+  final TextIcon? textIcon;
   final bool recording;
 
   Camera(this.cameraController,
-      {Key key,
+      {Key? key,
       this.takePhoto,
       this.changeCamera,
       this.changeCameraOption,
@@ -36,7 +36,8 @@ class _CameraState extends State<Camera> {
 
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    double scale = size.aspectRatio * widget.cameraController.value.aspectRatio;
+    double scale =
+        size.aspectRatio * widget.cameraController!.value.aspectRatio;
 
     if (scale < 1) scale = 1 / scale;
 
@@ -46,7 +47,7 @@ class _CameraState extends State<Camera> {
       child: Transform.scale(
           scale: scale,
           child: Center(
-            child: CameraPreview(widget.cameraController,
+            child: CameraPreview(widget.cameraController!,
                 child: Stack(children: <Widget>[
                   if (widget.text != null) ...{
                     Container(
@@ -75,8 +76,8 @@ class _CameraState extends State<Camera> {
                                     child: Image.asset(
                                         widget.recording
                                             ? CameraButtonIcons
-                                                .recordActive.name
-                                            : CameraButtonIcons.record.name,
+                                                .recordActive.name!
+                                            : CameraButtonIcons.record.name!,
                                         package: 'idntify_widget'),
                                     backgroundColor: Colors.white,
                                     onPressed: () {
@@ -95,12 +96,12 @@ class _CameraState extends State<Camera> {
                                     }),
                                 opacity: opacity,
                                 duration: Duration(seconds: 1)),
-                            if (widget.changeCameraOption) ...{
+                            if (widget.changeCameraOption!) ...{
                               Padding(
                                   padding: EdgeInsets.only(left: 5),
                                   child: FloatingActionButton(
                                       child: Image.asset(
-                                          CameraButtonIcons.flip.name,
+                                          CameraButtonIcons.flip.name!,
                                           package: 'idntify_widget'),
                                       backgroundColor: Colors.white,
                                       mini: true,

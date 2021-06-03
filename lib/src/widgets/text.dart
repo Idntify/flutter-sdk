@@ -3,8 +3,8 @@ import 'package:idntify_widget/src/models/text_icon.dart';
 import 'package:flutter/material.dart';
 
 class InfoText extends StatelessWidget {
-  final String text;
-  final TextIcon icon;
+  final String? text;
+  final TextIcon? icon;
   final bool bold;
   final double size;
   final Color color;
@@ -33,11 +33,13 @@ class InfoText extends StatelessWidget {
             ? Row(children: [
                 Padding(
                   padding: EdgeInsets.only(right: 12),
-                  child: Image.asset(icon.name,
-                      height: iconSize, width: iconSize, package: 'idntify_widget'),
+                  child: Image.asset(icon.name!,
+                      height: iconSize,
+                      width: iconSize,
+                      package: 'idntify_widget'),
                 ),
                 Flexible(
-                    child: Text(text,
+                    child: Text(text!,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: color,
@@ -47,7 +49,7 @@ class InfoText extends StatelessWidget {
                             fontFamily: 'Inter')))
               ], mainAxisAlignment: MainAxisAlignment.center)
             : Text(
-                text,
+                text!,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: color,

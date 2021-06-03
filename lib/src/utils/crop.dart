@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'dart:typed_data';
 
 class CropImage {
-  Future<Uint8List> getImage(editorKey) async {
+  Future<Uint8List?> getImage(editorKey) async {
     final state = editorKey.currentState;
-    final Rect cropRect = state.getCropRect();
+    final Rect? cropRect = state.getCropRect();
     final EditActionDetails action = state.editAction;
 
     final int rotateAngle = action.rotateAngle.toInt();
@@ -16,7 +16,7 @@ class CropImage {
 
     final ImageEditorOption option = ImageEditorOption();
     if (action.needCrop) {
-      option.addOption(ClipOption.fromRect(cropRect));
+      option.addOption(ClipOption.fromRect(cropRect!));
     }
 
     if (action.needFlip) {
@@ -29,7 +29,7 @@ class CropImage {
     }
 
     try {
-      final Uint8List result = await ImageEditor.editImage(
+      final Uint8List? result = await ImageEditor.editImage(
         image: img,
         imageEditorOption: option,
       );

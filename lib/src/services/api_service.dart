@@ -9,10 +9,10 @@ import 'package:idntify_widget/src/models/stage.dart';
 import 'package:http/http.dart';
 
 class IdntifyApiService {
-  String _base;
-  String _transactionKey;
+  late String _base;
+  String? _transactionKey;
   final String apiKey;
-  final Stage stage;
+  final Stage? stage;
   final String origin;
 
   IdntifyApiService(this.apiKey, this.origin, {this.stage = Stage.dev}) {
@@ -36,7 +36,7 @@ class IdntifyApiService {
         return Future.error(_handleResponseError(res.statusCode, parsedBody));
       }
 
-      _transactionKey = parsedBody.data['transactionToken'];
+      _transactionKey = parsedBody.data!['transactionToken'];
 
       return parsedBody;
     } catch (error) {
@@ -46,16 +46,16 @@ class IdntifyApiService {
 
   Future<IdntifyResponse> addDocument(Uint8List data, DocumentType type) async {
     const String endpoint = 'v1/widget/transaction/document';
-    final Map<String, String> headers = {'x-transaction-key': _transactionKey};
+    final Map<String, String?> headers = {'x-transaction-key': _transactionKey};
 
     try {
       final String dataB64 = base64Encode(data.toList());
-      final Map<String, String> payload = {
+      final Map<String, String?> payload = {
         'd': 'data:image/png;base64,$dataB64',
         's': type.name
       };
       Response res = await post(Uri.https(_base, endpoint),
-          headers: headers, body: json.encode(payload));
+          headers: headers as Map<String, String>?, body: json.encode(payload));
       Map<String, dynamic> body = jsonDecode(res.body);
 
       IdntifyResponse parsedBody = IdntifyResponse.fromJson(body);
@@ -73,7 +73,7 @@ class IdntifyApiService {
   Future<IdntifyResponse> addSelfie(
       Uint8List selfieImageData, Uint8List selfieVideoData) async {
     const String endpoint = 'v1/widget/transaction/document/selfie';
-    final Map<String, String> headers = {'x-transaction-key': _transactionKey};
+    final Map<String, String?> headers = {'x-transaction-key': _transactionKey};
 
     try {
       final String imageB64 = base64Encode(selfieImageData.toList());
@@ -86,7 +86,7 @@ class IdntifyApiService {
       };
 
       Response res = await post(Uri.https(_base, endpoint),
-          headers: headers, body: jsonEncode(payload));
+          headers: headers as Map<String, String>?, body: jsonEncode(payload));
       Map<String, dynamic> body = jsonDecode(res.body);
 
       IdntifyResponse parsedBody = IdntifyResponse.fromJson(body);
@@ -102,8 +102,8 @@ class IdntifyApiService {
   }
 
   dynamic _handleResponseError(int statusCode, IdntifyResponse response) {
-    final String errorCode = response.error;
-    final String errorMessage = response.message;
+    final String? errorCode = response.error;
+    final String? errorMessage = response.message;
     final String error = "$errorMessage ($errorCode)";
 
     switch (statusCode) {
