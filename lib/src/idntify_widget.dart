@@ -115,10 +115,10 @@ class _IdnitfyState extends State<Idntify> {
     super.dispose();
   }
 
-  ///
+  /// Sets the reference of the requested cameras validating if it can be valid.
   ///
   /// TODO: This code needs to be rewritten or refactored.
-  /// TODO: This code should be part of the [Camera] widget.
+  /// TODO: This code should be part of the [Camera] widget class.
   Future<dynamic> getCamera(
       {bool flip = false,
       CameraLensDirection cameraToSet = CameraLensDirection.back}) async {
@@ -157,6 +157,8 @@ class _IdnitfyState extends State<Idntify> {
     }
   }
 
+  /// This handles the ID photo.
+  /// TODO: this might probably be inside the [Camera] widget class.
   Future<void> _handleIdPhoto() async {
     try {
       final XFile image = await _cameraController!.takePicture();
@@ -184,6 +186,8 @@ class _IdnitfyState extends State<Idntify> {
     }
   }
 
+  /// This handles the selfie process.
+  /// TODO: this might probably be inside the [Camera] widget class.
   Future<void> _handleSelfie() async {
     try {
       final Map<String, Uint8List> bytes = await getSelfie(_cameraController!);
@@ -204,6 +208,8 @@ class _IdnitfyState extends State<Idntify> {
     }
   }
 
+  /// Helps to handle when an image gets cropped.
+  /// TODO: this should be inside the [Cropper] widget class.
   Future<void> _handleCropper() async {
     try {
       setState(() => _loadingImage = true);
@@ -241,6 +247,8 @@ class _IdnitfyState extends State<Idntify> {
     }
   }
 
+  /// Helps to handle when the user picks an image.
+  /// TODO: This might be inside the [ImagePickerSelector] widget class.
   Future<void> _handlePickerImage() async {
     try {
       Uint8List image = await pickImage(_imagePicker);
@@ -272,6 +280,16 @@ class _IdnitfyState extends State<Idntify> {
     }
   }
 
+  /// Builds the widget based on different constrains.
+  ///
+  /// The color of the decoration property of [Container] changes depending on specific steps
+  /// and the [_takePicture] flag.
+  ///
+  /// Logo is only displayed based on a flag (that changes depending on the step). It also
+  /// scales based on the device size.
+  ///
+  /// What changes constantly (and what builds the whole screen) is based on the [_loadProcess]
+  /// function.
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Container(
@@ -294,6 +312,21 @@ class _IdnitfyState extends State<Idntify> {
     );
   }
 
+  /// Returns what widget to render based on the [currentStep] value.
+  ///
+  /// Each widget screen has their own activity and sometimes the widget changes depending
+  /// on the step and some other variables.
+  ///
+  /// The steps should work like this:
+  /// 1. The process tries to create a new transaction.
+  /// 2. The user chooses between loading a device image or take a picture.
+  /// If the user chooses to load an image then that process will be executed in that step.
+  /// 3/5. If the user chooses to take a picture, then these are the steps when takes the
+  /// frontal and reverse picture of its ID.
+  /// 4/6. If the user chooses to take a picture, this is when the user can crop the
+  /// frontal/reverse picture of its ID.
+  /// 7. The selfie process, a one-second recording and a snapshot.
+  /// 8. If the process was correct it'll render the confirmation.
   Widget _loadProcess() {
     switch (currentStep) {
       case 1:
@@ -330,6 +363,11 @@ class _IdnitfyState extends State<Idntify> {
     }
   }
 
+  /// Step 1.
+  /// Tries to create a transaction.
+  /// If an error happened (wrong [apiKey]/[origin]) it'll show an error screen and that's it.
+  /// If it was successful then it'll render info about what the process is about, if the
+  /// 'continue' button is pressed then the [currentStep] value will be updated to 2.
   Widget _initProcess() {
     return FutureBuilder(
         future: _apiService!.createTransaction(),
@@ -376,6 +414,46 @@ class _IdnitfyState extends State<Idntify> {
         });
   }
 
+  /// Step 2.
+  /// Displays information about the ID pictures and let the user choose between load images saved
+  /// in their device or take a picture.
+  /// If the user chooses to take a picture then the [currentStep] value will be updated to 3.
+  /// If the user chooses to load the images then it'll render [_loadPhotos]
+  Widget _showIdInfo() {
+    var texts = [
+      InfoText(
+          'Usa las cámaras de tu teléfono para tomar una foto por cada lado de tu INE.',
+          padding: 5),
+      InfoText('Requerimos de:', bold: true, padding: 5),
+      InfoText('1 foto de la parte frontal', icon: TextIcon.front, padding: 10),
+      InfoText('1 foto de la parte posterior',
+          icon: TextIcon.reverse, padding: 10),
+    ];
+    List<Button> buttons = [
+      Button(
+        'Cargar archivos',
+        alternative: true,
+        onPressed: () => setState(() => _loadFiles = true),
+      ),
+      Button('Tomar foto', onPressed: () {
+        setState(() => {currentStep = 3, _showLogo = false});
+        widget.onStepChange?.call(currentStep);
+      })
+    ];
+
+    return Info(
+      icon: InfoIcon.photo,
+      title: 'Foto de identificación',
+      texts: texts,
+      buttons: buttons,
+    );
+  }
+
+  /// Renders the widget that helps the user to select an image from its device.
+  /// User is required to choose an image and wait until it is uploaded, after the first
+  /// one (frontal) was uploaded then the second one (reverse) should be selected and wait until
+  /// it gets uploaded.
+  /// If everything was uploaded correctly, then the value of [currentStep] will be updated to 7.
   Widget _loadPhotos() {
     var texts = [
       InfoText(
@@ -431,36 +509,13 @@ class _IdnitfyState extends State<Idntify> {
     );
   }
 
-  Widget _showIdInfo() {
-    var texts = [
-      InfoText(
-          'Usa las cámaras de tu teléfono para tomar una foto por cada lado de tu INE.',
-          padding: 5),
-      InfoText('Requerimos de:', bold: true, padding: 5),
-      InfoText('1 foto de la parte frontal', icon: TextIcon.front, padding: 10),
-      InfoText('1 foto de la parte posterior',
-          icon: TextIcon.reverse, padding: 10),
-    ];
-    List<Button> buttons = [
-      Button(
-        'Cargar archivos',
-        alternative: true,
-        onPressed: () => setState(() => _loadFiles = true),
-      ),
-      Button('Tomar foto', onPressed: () {
-        setState(() => {currentStep = 3, _showLogo = false});
-        widget.onStepChange?.call(currentStep);
-      })
-    ];
-
-    return Info(
-      icon: InfoIcon.photo,
-      title: 'Foto de identificación',
-      texts: texts,
-      buttons: buttons,
-    );
-  }
-
+  /// Step 3/5.
+  /// Renders a [Camera] widget that helps the user to take a photo.
+  ///
+  /// This will be rendered in both steps because of the frontal and reverse ID pictures.
+  /// It first validates if the camera can be connected with the widget, if it's valid then
+  /// the user should take a picture and the [currentStep] value will be updated to 4/6,
+  /// if something went wrong with the camera, it'll retry to connect it.
   Widget _takeIdPhoto() {
     return FutureBuilder(
         future: getCamera(flip: _flipCamera),
@@ -505,6 +560,9 @@ class _IdnitfyState extends State<Idntify> {
         });
   }
 
+  /// Step 4/6.
+  /// Renders a [Cropper] widget based on the frontal/reverse picture the user has taken.
+  /// If the image was cropped and uploaded the [currentStep] value will be updated to 7.
   Widget _cropper() {
     return Cropper(
       _editorKey,
@@ -515,6 +573,9 @@ class _IdnitfyState extends State<Idntify> {
     );
   }
 
+  /// Step 7.
+  /// Renders a [Info] widget with information about what the selfie process is all about.
+  /// When the user pressed the 'continue' button, the value of [currentStep] will be updated to 8.
   Widget _showSelfieInfo() {
     return Info(
       icon: InfoIcon.selfie,
@@ -542,6 +603,8 @@ class _IdnitfyState extends State<Idntify> {
     );
   }
 
+  /// Self explanatory. Show quick instructions about what is happening with the process.
+  /// This will be rendered before the [_takeIdPhoto] or [_captureSelfie] are bout to happen.
   Widget _showInstructions(String text, InstructionImage image,
       {int seconds: 4,
       CameraLensDirection cameraToSet: CameraLensDirection.back}) {
@@ -551,6 +614,10 @@ class _IdnitfyState extends State<Idntify> {
     return Instructions(text, image);
   }
 
+  /// Step 8.
+  /// Render that will atempt to record a one-second video and a snapshot.
+  /// If it's valid then the value of [currentStep] will be updated to 9.
+  /// If it can't get a proper validation it'll retry the step process.
   Widget _captureSelfie() {
     return FutureBuilder(
         future: getCamera(cameraToSet: CameraLensDirection.front),
@@ -591,6 +658,9 @@ class _IdnitfyState extends State<Idntify> {
         });
   }
 
+  /// Step 9.
+  /// Renders a widget that tells the user that the process has finished.
+  /// If a [onTransactionFinished] function was provided then it'll get called.
   Widget _processFinished() {
     Timer(Duration(seconds: 7), () => widget.onTransactionFinished?.call());
     return Info(
