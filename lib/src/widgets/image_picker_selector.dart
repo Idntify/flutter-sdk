@@ -4,6 +4,18 @@ import 'package:idntify_widget/src/models/image_picker_icon.dart';
 import 'package:idntify_widget/src/models/text_icon.dart';
 import 'package:idntify_widget/src/widgets/text.dart';
 
+/// Widget that displays an area to be pressed for loading a device image.
+///
+/// A [ImageṔickerIcon] will need to be passed as an argument, the icon can change depending on the state
+/// of the main [Idntify] widget.
+///
+/// A [text] should be provided as a small instruction, optionally a [TextIcon] can also
+/// be provided.
+///
+/// Finally an [onTap] function can also be provided by a custom function.
+///
+/// TODO: The picker process should be inside the class instead of the main
+/// [Idntify] widget. This widget should be transformed a [StatefulWidget].
 class ImagePickerSelector extends StatelessWidget {
   final TextIcon? textIcon;
   final ImagePickerIcon icon;

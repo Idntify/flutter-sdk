@@ -8,6 +8,19 @@ import 'package:idntify_widget/src/widgets/text.dart';
 
 import 'package:camera/camera.dart';
 
+/// Returns a widget that displays a screen with the preview of the camera.
+///
+/// In order to make it work a [CameraController] must be provided.
+///
+/// It'll need to also get provided custom self explanatory functions, [takePhoto] and [changeCamera]
+/// if it was sent a [true] for [changeCameraOption] (verify if there are more than one camera).
+/// If the action button will be use for recording (like in the selfie process), then a [true] [bool] should be provided as [recording].
+///
+/// Finally, you can also add a short instruction based on a [string] [text] and a [TextIcon].
+///
+/// The preview of the camera is displayed based on the properties of the device screen.
+///
+/// TODO: The camera functionality should probably be inside these classes instead of being in the main [Idntify] widget
 class Camera extends StatefulWidget {
   final CameraController? cameraController;
   final GestureTapCallback? takePhoto;

@@ -1,5 +1,11 @@
 import 'package:flutter/foundation.dart';
 
+/// Response object based on what the server retrieves.
+///
+/// [result] is a boolean that depends on the success of the request
+/// [error] will receive a null if the [result] is true, otherwise it'll receive an error code
+/// [message] is a personalized message based on the [result] and [error]
+/// [data] is any aditional (requested) information
 class IdntifyResponse {
   final bool? result;
   final String? error;

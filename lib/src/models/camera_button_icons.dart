@@ -1,7 +1,7 @@
-// Possible values for an icon.
+/// Possible values for button actions in the [Camera] widget.
 enum CameraButtonIcons { record, recordActive, flip }
 
-// File reference given an enum value
+/// File reference of the possible button actions in the [Camera] widget.
 extension CameraButtonIconsImplementation on CameraButtonIcons {
   String? get name {
     switch (this) {

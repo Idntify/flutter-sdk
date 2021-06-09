@@ -1,5 +1,7 @@
+/// Possible values for an icon in the [Info] widget.
 enum InfoIcon { identity, photo, selfie, complete }
 
+/// File reference of the possible icons in the [Info] widget.
 extension InfoIconExension on InfoIcon? {
   String? get name {
     switch (this) {

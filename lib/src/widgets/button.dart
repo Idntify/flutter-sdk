@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:idntify_widget/src/widgets/text.dart';
 
+/// Button wrapper with custom style.
+///
+/// The style depends on the [alternative] argument, by default it returns
+/// the main style. A [text] argument is required. An [onPressed] function can
+/// also be provided as an argument.
 class Button extends StatelessWidget {
   final bool alternative;
   final String text;

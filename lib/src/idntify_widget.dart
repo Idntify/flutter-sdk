@@ -26,6 +26,16 @@ import 'package:idntify_widget/src/widgets/text.dart';
 import 'package:idntify_widget/src/widgets/image_picker_selector.dart';
 import 'package:image_picker/image_picker.dart';
 
+/// Main IDntify widget.
+///
+/// [apiKey] is generated on the IDntify platform. Required.
+/// [origin] is the origin of the request that the client set on the IDntify platform. Required.
+/// [cameras] is a required argument of a [List<CameraDescription>] where the info of cameras on
+/// the device is referenced.
+/// [stage] is an optional parameter. Set by 'dev' as default, make sure you set it to
+/// 'prod' when needed.
+/// [onStepChange] is a custom function triggered when the stage of the IDntify process haschanged.
+/// [onTransactionFinished] is a custom function triggered when IDntify process has finished.
 class Idntify extends StatefulWidget {
   final String apiKey;
   final String origin;
@@ -42,16 +52,33 @@ class Idntify extends StatefulWidget {
   _IdnitfyState createState() => _IdnitfyState();
 }
 
+/// [StatefulWidget] based on the main [Idntify] widget.
+///
+/// Because of the nature of the process, a re-rendering screen is needed.
+/// Router/router were avoided to prevent any conflict with the main application.
+///
+/// What is rendered depends on the value of [currentStep]. This value is updated
+/// according to what the user does.
 class _IdnitfyState extends State<Idntify> {
+  /// Instance of the editor key. Used for cropping images.
   final GlobalKey<ExtendedImageEditorState> _editorKey =
       GlobalKey<ExtendedImageEditorState>();
+
+  /// Instance reference of the [IdntifyApiService].
   IdntifyApiService? _apiService;
+
+  /// Current step of the IDntify process.
   int currentStep = 1;
-  // Image picker controller.
+
+  /// Image picker controller.
   final ImagePicker _imagePicker = ImagePicker();
-  // Camera reference and controller.
+
+  /// Frontal camera reference.
   CameraDescription? _frontCamera;
+
+  /// Back camera reference.
   CameraDescription? _backCamera;
+  // Camera controller. It includes the reference for the cameras on the device.
   CameraController? _cameraController;
 
   // Picture of the ID front.
@@ -72,6 +99,8 @@ class _IdnitfyState extends State<Idntify> {
   bool _showLogo = true;
   bool _flipCamera = false;
 
+  /// Whenever the widget is rendered for the first time, it'll create an instance of
+  /// the [IdntifyApiService].
   @override
   void initState() {
     super.initState();
@@ -86,7 +115,10 @@ class _IdnitfyState extends State<Idntify> {
     super.dispose();
   }
 
-  // This code needs to be rewritten or refactored
+  ///
+  ///
+  /// TODO: This code needs to be rewritten or refactored.
+  /// TODO: This code should be part of the [Camera] widget.
   Future<dynamic> getCamera(
       {bool flip = false,
       CameraLensDirection cameraToSet = CameraLensDirection.back}) async {
@@ -154,8 +186,7 @@ class _IdnitfyState extends State<Idntify> {
 
   Future<void> _handleSelfie() async {
     try {
-      final Map<String, Uint8List> bytes =
-          await getSelfie(_cameraController!, _apiService);
+      final Map<String, Uint8List> bytes = await getSelfie(_cameraController!);
 
       await _apiService!.addSelfie(bytes['image']!, bytes['video']!);
 
@@ -177,8 +208,7 @@ class _IdnitfyState extends State<Idntify> {
     try {
       setState(() => _loadingImage = true);
 
-      final result =
-          await (CropImage().getImage(_editorKey) as FutureOr<Uint8List>);
+      final result = await (cropImage(_editorKey) as FutureOr<Uint8List>);
 
       await _apiService!.addDocument(
           result,

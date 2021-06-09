@@ -1,5 +1,7 @@
+/// Possible values for an icon in the [Instructions] widget.
 enum InstructionImage { front, reverse, selfie }
 
+/// File reference of the possible icon in the [Instructions] widget.
 extension InstructionImageExtension on InstructionImage {
   String? get name {
     switch (this) {

@@ -2,6 +2,13 @@ import 'package:idntify_widget/src/models/text_icon.dart';
 
 import 'package:flutter/material.dart';
 
+/// A Text wrapper with custom style.
+///
+/// A [string] [text] should be provided, this is self explanatory.
+/// The text can contain an [TextIcon], if it's needed.
+/// There are other specific arguments for styling just as [bold], [size], [color] and [padding].
+///
+/// The text changes it's [size] depending on the screen size.
 class InfoText extends StatelessWidget {
   final String? text;
   final TextIcon? icon;

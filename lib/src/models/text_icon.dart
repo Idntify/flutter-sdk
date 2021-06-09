@@ -1,5 +1,7 @@
+/// Possible values for an icon in the custom [Text] widget.
 enum TextIcon { first, second, front, reverse }
 
+/// File reference of the possible icons in the custom [Text] widget.
 extension TextIconExtension on TextIcon? {
   String? get name {
     switch (this) {
