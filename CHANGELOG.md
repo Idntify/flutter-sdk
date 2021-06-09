@@ -1,3 +1,12 @@
+## [1.1.1]
+
+* Code documentation added.
+* Null safety support added.
+* Code formatted.
+* Dependencies up-to-date.
+* Completed dart conventions.
+* Pub points improved.
+
 ## [1.1.0]
 
 * `IdntifyApiService` code and error handling improved.
